@@ -17,16 +17,15 @@ public class CountIsland {
 		DisjointSet ds = new DisjointSet(m*n);
 		for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) {
 			if (a[i][j] == 0) continue;
-			if (j > 0 && a[i][j-1] == 1) ds.union((i+1)*(j+1)-1, (i+1)*(j)-1);
-			if (i > 0 && j > 0 && a[i-1][j-1] == 1) ds.union((i+1)*(j+1)-1, (i)*(j)-1);
-			if (i > 0 && a[i-1][j] == 1) ds.union((i+1)*(j+1)-1, (i)*(j+1)-1);
-			if (i > 0 && j < n-1 && a[i-1][j+1] == 1) ds.union((i+1)*(j+1)-1, (i)*(j+2)-1);
+			if (j > 0 && a[i][j-1] == 1) ds.union(i*n+j, i*n+j-1);
+			if (i > 0 && j > 0 && a[i-1][j-1] == 1) ds.union(i*n+j, (i-1)*n+j-1);
+			if (i > 0 && a[i-1][j] == 1) ds.union(i*n+j, (i-1)*n+j);
+			if (i > 0 && j < n-1 && a[i-1][j+1] == 1) ds.union(i*n+j, (i-1)*n+j+1);
 		}
 		
 		int cnt = 0;
 		for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) {
-			int c = (i+1)*(j+1)-1;
-			if (a[i][j] == 1 && ds.find(c) == c) cnt++;
+			if (a[i][j] == 1 && ds.find(i*n+j) == i*n+j) cnt++;
 		}
 		
 		return cnt;
