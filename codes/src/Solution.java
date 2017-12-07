@@ -10,7 +10,8 @@ public class Solution {
     public static void main(String[] args) {
     	//test();
     	//hackerrank.MagicSquare.main1(args);
-    	alg.Kmp.main1(args);
+    	//alg.Kmp.main(args);
+    	geeksforgeeks.CountIsland.main(args);
     	
     }
     
