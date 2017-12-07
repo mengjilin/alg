@@ -11,15 +11,13 @@ public class Solution {
     	//test();
     	//hackerrank.MagicSquare.main1(args);
     	//alg.Kmp.main(args);
-    	geeksforgeeks.CountIsland.main(args);
+    	geeksforgeeks.array.RotateArray.main(args);
     	
     }
     
     static void test() {
-    	int[] a = new int[] {2,5,3};
-    	Arrays.sort(a);
-    	int f = Arrays.binarySearch(a, 4);
-    	System.out.println(f);
+    	int i = 3;
+    	System.out.println((i-15+21)%7);
     }
     
 }
