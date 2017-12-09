@@ -11,7 +11,7 @@ public class Solution {
     	//test();
     	//hackerrank.MagicSquare.main1(args);
     	//alg.Kmp.main(args);
-    	geeksforgeeks.array.FindNumber.main(args);
+    	geeksforgeeks.sort.QuickSort.main(args);
     	
     }
     

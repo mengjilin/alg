@@ -1,15 +1,18 @@
 package geeksforgeeks.array;
 
+import java.util.Arrays;
+
 public class RotateArray {
 
 	public static void main(String[] args) {
 		int[] a = new int[] {1,2,3,4,5,6,7};
-		rotate(a, a.length, 2);
-		System.out.println(a[0]==3 && a[1]==4 && a[2]==5 && a[3]==6 && a[4]==7 && a[5]==1 && a[6]==2);
+		leftRotate2(a, a.length, 2);
+		int[] expected = new int[] {3,4,5,6,7,1,2};
+		System.out.println(0 == Arrays.compare(a, expected));
 
 	}
 
-	static void rotate(int[] a, int n, int d) {
+	static void leftRotate(int[] a, int n, int d) {
 		int g = gcd(n, d);
 		for (int i = 0; i < g; i++) {
 			int temp = a[i];
@@ -28,5 +31,20 @@ public class RotateArray {
 			a = t;
 		}
 		return a;
+	}
+
+	static void leftRotate2(int[] a, int n, int d) {
+		reverse(a, 0, d-1);
+		reverse(a, d, n-1);
+		reverse(a, 0, n-1);
+	}
+	
+	// reverse the array from startIndex (inclusive) to endIndex (inclusive)
+	static void reverse(int[] a, int startIndex, int endIndex) {
+		for (; startIndex < endIndex; startIndex++, endIndex--) {
+			int t = a[startIndex];
+			a[startIndex] = a[endIndex];
+			a[endIndex] = t;
+		}
 	}
 }
