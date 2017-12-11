@@ -23,13 +23,14 @@ public class MergeSort {
 		int m = s + (t-s)/2;
 		mergesort(a, s, m, b);
 		mergesort(a, m+1, t, b);
-		int i = s, j = m+1, k = s;
-		while (i <= m && j <= t) {
-			if (a[i] < a[j]) b[k++] = a[i++];
-			else b[k++] = a[j++];
+		merge(a, s, m, t, b);
+	}
+	
+	static void merge(int[] a, int s, int m, int t, int[] b) {
+		for (int i = s; i <= t; i++) b[i] = a[i];
+		for (int i = s, j = m+1, k = s; k <= t; k++) {
+			if (j > t || (i <= m && b[i] < b[j])) a[k] = b[i++];
+			else a[k] = b[j++];
 		}
-		while (i <= m) b[k++] = a[i++];
-		while (j <= t) b[k++] = a[j++];
-		for (; s <= t; s++) a[s] = b[s];
 	}
 }

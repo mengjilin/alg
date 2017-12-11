@@ -16,16 +16,16 @@ public class FindNumber {
 
 	// find a number in a sorted and rotated array
 	static int findNumber(int[] a, int v) {
-		int i = 0, j = a.length; // i inclusive, j exclusive
-		while (i < j) {
-			int m = i + (j-i)/2;
+		int i = 0, j = a.length-1; // i and j inclusive
+		while (i <= j) {
+			int m = i + (j-i+1)/2;
 			if (a[m] == v) return m;
 			if (a[i] <= a[m]) { // left is sorted
-				if (a[i] <= v && v <= a[m]) j = m;
+				if (a[i] <= v && v <= a[m]) j = m - 1;
 				else i = m + 1;
 			} else { // right is sorted
-				if (a[m] <= v && v <= a[j-1]) i = m + 1;
-				else j = m;
+				if (a[m] <= v && v <= a[j]) i = m + 1;
+				else j = m - 1;
 			}
 		}
 		return -1;

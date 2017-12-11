@@ -17,7 +17,7 @@ public class Kmp {
     static int search(String pattern, String s) 
     {
     	// TODO: check null and empty   	
-        int[] lps = getLps(pattern);
+        int[] lps = buildLps(pattern);
         int pi = 0;  // index for pattern
         for (int i = 0; i < s.length();) {        	
             if (pattern.charAt(pi) == s.charAt(i)) {
@@ -36,7 +36,7 @@ public class Kmp {
     }
  
     // get the array of longest prefix suffix
-    static int[] getLps(String s) 
+    static int[] buildLps(String s) 
     {
     	int[] lps = new int[s.length()];
     	
