@@ -1,4 +1,4 @@
-package geeksforgeeks.array;
+package alg.array;
 
 import java.util.Arrays;
 
@@ -6,10 +6,23 @@ public class RotateArray {
 
 	public static void main(String[] args) {
 		int[] a = new int[] {1,2,3,4,5,6,7};
-		leftRotate2(a, a.length, 2);
+		rotate(a, a.length, 2);
 		int[] expected = new int[] {3,4,5,6,7,1,2};
 		System.out.println(0 == Arrays.compare(a, expected));
 
+	}
+	
+	static void rotate(int[] a, int n, int d) {
+		d = (d%n + n) % n;
+		for (int i = 0, s = 0; i < n; i++, s++) {
+			int temp = a[s];
+			int k, kn;
+			for (k = s; (kn = (k+d)%n) != s; k = kn) {
+				a[k] = a[kn];
+				i++;
+			}
+			a[k] = temp;
+		}
 	}
 
 	static void leftRotate(int[] a, int n, int d) {

@@ -1,4 +1,4 @@
-package geeksforgeeks;
+package alg;
 
 public class DisjointSet {
 

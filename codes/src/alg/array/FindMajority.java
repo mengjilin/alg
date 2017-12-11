@@ -1,4 +1,4 @@
-package geeksforgeeks.array;
+package alg.array;
 
 public class FindMajority {
 

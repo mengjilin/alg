@@ -1,4 +1,4 @@
-package geeksforgeeks.sort;
+package alg.sort;
 
 import java.util.Arrays;
 

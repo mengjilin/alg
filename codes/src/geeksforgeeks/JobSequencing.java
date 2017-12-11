@@ -1,6 +1,7 @@
 package geeksforgeeks;
 
 import java.util.*;
+import alg.DisjointSet;
 
 public class JobSequencing {
 
