@@ -25,7 +25,7 @@ public class LongestIncreaseSubsequence {
 		return len;
 	}
 	
-	/* let Ending(n) as the lenght of longest increase subsequence ending with a[n],
+	/* let Ending(n) as the length of longest increasing subsequence ending with a[n],
 	 * Ending(n) = max(Ending(i) if a[i]>a[n], i=[0..n-1]) or 1
 	 */
 	static int dp(int[] a) {
