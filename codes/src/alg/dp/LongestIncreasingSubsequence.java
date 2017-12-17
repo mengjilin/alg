@@ -2,7 +2,7 @@ package alg.dp;
 
 import java.util.*;
 
-public class LongestIncreaseSubsequence {
+public class LongestIncreasingSubsequence {
 
 	public static void main(String[] args) {
 		int[] a = new int[]{5,2,7,4,3,8};

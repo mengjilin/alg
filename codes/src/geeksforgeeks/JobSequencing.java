@@ -27,11 +27,7 @@ public class JobSequencing {
 	}
 	
 	static String jobSequence(Job[] jobs) {
-		Arrays.parallelSort(jobs, new Comparator<Job> () {
-			public int compare(Job a, Job b) {
-				return -Integer.compare(a.profit, b.profit);
-			}
-		});
+		Arrays.parallelSort(jobs, (a, b) -> -Integer.compare(a.profit, b.profit));
 		
 		Job[] selectedJobs = new Job[jobs.length];
 //		boolean[] alloted = new boolean[jobs.length];
@@ -56,11 +52,7 @@ public class JobSequencing {
 				ds.union(avail, ds.find(avail-1));
 			}
 		}
-		Arrays.parallelSort(selectedJobs, 0, si, new Comparator<Job> () {
-			public int compare(Job a, Job b) {
-				return Integer.compare(a.deadline, b.deadline);
-			}
-		});
+		Arrays.parallelSort(selectedJobs, 0, si, (a, b) -> Integer.compare(a.deadline, b.deadline));
 		
 		String ret = "";
 		for (int i = 0; i < si; i++) {

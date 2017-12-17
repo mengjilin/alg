@@ -21,11 +21,7 @@ public class CountEmployees {
 	static int[] countEmployees(String[][] emps) {
 		Collection<Employee> cr = countEmployees2(emps);
 		Employee[] r = cr.toArray(new Employee[cr.size()]);
-		Arrays.sort(r, new Comparator<Employee>() {
-			public int compare(Employee a, Employee b) {
-				return a.name.compareTo(b.name);
-			}
-		});
+		Arrays.sort(r, (a, b) -> a.name.compareTo(b.name));
 		int[] ret = new int[r.length];
 		for (int i = 0; i < r.length; i++) ret[i] = r[i].count;
 		return ret;
