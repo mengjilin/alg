@@ -1,4 +1,4 @@
-package geeksforgeeks;
+package geeksforgeeks.greedy;
 
 import java.util.*;
 import alg.DisjointSet;
