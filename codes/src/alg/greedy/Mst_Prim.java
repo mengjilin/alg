@@ -1,4 +1,4 @@
-package alg.dp;
+package alg.greedy;
 
 import java.util.Arrays;
 import java.util.TreeSet;

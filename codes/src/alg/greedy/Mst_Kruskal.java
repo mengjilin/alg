@@ -1,4 +1,4 @@
-package alg.dp;
+package alg.greedy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
