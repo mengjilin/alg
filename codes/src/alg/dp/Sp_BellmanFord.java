@@ -2,7 +2,7 @@ package alg.dp;
 
 import java.util.Arrays;
 
-public class BellmanFord {
+public class Sp_BellmanFord {
 
 	public static void main(String[] args) {
 		Graph g = new Graph();

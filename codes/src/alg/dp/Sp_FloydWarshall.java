@@ -2,7 +2,7 @@ package alg.dp;
 
 import java.util.Arrays;
 
-public class FloydWarshall {
+public class Sp_FloydWarshall {
 
 	public static void main(String[] args) {
 		int[][] graph = new int[][] { 

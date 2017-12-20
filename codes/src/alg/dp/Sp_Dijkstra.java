@@ -2,7 +2,7 @@ package alg.dp;
 
 import java.util.*;
 
-public class Dijkstra {
+public class Sp_Dijkstra {
 
 	public static void main(String[] args) {
 		Graph g = new Graph();
