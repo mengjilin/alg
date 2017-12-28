@@ -4,27 +4,6 @@ import java.util.*;
 import alg.DisjointSet;
 
 public class JobSequencing {
-
-	public static void main(String[] args) {
-		Job[] jobs = new Job[] {
-			new Job("a",4,2),
-			new Job("b",1,1),
-			new Job("c",1,4),
-			new Job("d",1,3),
-		};
-		String r = jobSequence(jobs);
-		System.out.println("c,a".equals(r));
-		
-		jobs = new Job[] {
-			new Job("a",2,100),
-			new Job("b",1,19),
-			new Job("c",2,27),
-			new Job("d",1,25),
-			new Job("e",3,13),
-		};
-		r = jobSequence(jobs);
-		System.out.println("c,a,e".equals(r) || "a,c,e".equals(r));
-	}
 	
 	static String jobSequence(Job[] jobs) {
 		Arrays.parallelSort(jobs, (a, b) -> -Integer.compare(a.profit, b.profit));
@@ -72,5 +51,26 @@ public class JobSequencing {
 			this.deadline = deadline;
 			this.profit = profit;
 		}
+	}
+
+	public static void main(String[] args) {
+		Job[] jobs = new Job[] {
+			new Job("a",4,2),
+			new Job("b",1,1),
+			new Job("c",1,4),
+			new Job("d",1,3),
+		};
+		String r = jobSequence(jobs);
+		System.out.println("c,a".equals(r));
+		
+		jobs = new Job[] {
+			new Job("a",2,100),
+			new Job("b",1,19),
+			new Job("c",2,27),
+			new Job("d",1,25),
+			new Job("e",3,13),
+		};
+		r = jobSequence(jobs);
+		System.out.println("c,a,e".equals(r) || "a,c,e".equals(r));
 	}
 }

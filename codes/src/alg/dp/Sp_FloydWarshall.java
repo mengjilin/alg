@@ -2,25 +2,10 @@ package alg.dp;
 
 import java.util.Arrays;
 
+/*
+ * 3 loops for each vertex, 'relax' each vertex
+ */
 public class Sp_FloydWarshall {
-
-	public static void main(String[] args) {
-		int[][] graph = new int[][] { 
-			{0,   5,  INF, 10},
-            {INF,  0,  3,  INF},
-            {INF, INF, 0,   1},
-            {INF, INF, INF, 0} };
-        int[][] r = floydWarshall(graph);
-		int[][] expected = new int[][] { 
-			{0,   5,   8,   9},
-            {INF,  0,  3,   4},
-            {INF, INF, 0,   1},
-            {INF, INF, INF, 0} };
-        boolean result = true;
-        for (int i = 0; i < r.length; i++)
-        	result &= Arrays.compare(r[i], expected[i]) == 0;
-        System.out.println(result);
-	}
 
 	static int INF = Integer.MAX_VALUE / 2;
 	static int[][] floydWarshall(int[][] graph) {
@@ -40,5 +25,23 @@ public class Sp_FloydWarshall {
 		}
 		
 		return dist;
+	}
+
+	public static void main(String[] args) {
+		int[][] graph = new int[][] { 
+			{0,   5,  INF, 10},
+            {INF,  0,  3,  INF},
+            {INF, INF, 0,   1},
+            {INF, INF, INF, 0} };
+        int[][] r = floydWarshall(graph);
+		int[][] expected = new int[][] { 
+			{0,   5,   8,   9},
+            {INF,  0,  3,   4},
+            {INF, INF, 0,   1},
+            {INF, INF, INF, 0} };
+        boolean result = true;
+        for (int i = 0; i < r.length; i++)
+        	result &= Arrays.compare(r[i], expected[i]) == 0;
+        System.out.println(result);
 	}
 }

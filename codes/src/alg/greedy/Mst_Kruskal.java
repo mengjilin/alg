@@ -6,7 +6,30 @@ import java.util.Arrays;
 import alg.DisjointSet;
 import alg.Test;
 
+/*
+ * 1. create a disjoint set for all vertices
+ * 2. sort the edges in non-decreasing order of their weight 
+ * 3. for each edge, add it to mst if the two vertices are in different set. 
+ */
 public class Mst_Kruskal {
+
+	static int[][] kruskal(int n, int[][] edges) {
+		ArrayList<int[]> r = new ArrayList<>();
+		DisjointSet ds = new DisjointSet(n);
+		Arrays.sort(edges, (a, b) -> a[2] - b[2]);
+		for (int[] e : edges) {
+			int u = ds.find(e[0]);
+			int v = ds.find(e[1]);
+			if (u != v) {
+				r.add(new int[] {e[0], e[1]});
+				ds.union(u, v);
+			}			
+		}
+		
+		int[][] ret = r.toArray(new int[r.size()][]);
+		Arrays.sort(ret, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+		return ret;
+	}
 
 	public static void main(String[] args) {
 		int[][] edges = new int[][] {
@@ -48,24 +71,6 @@ public class Mst_Kruskal {
 			{6, 7},
 		};
 		System.out.println(Test.isSame(r, exp));
-	}
-	
-	static int[][] kruskal(int n, int[][] edges) {
-		ArrayList<int[]> r = new ArrayList<>();
-		Arrays.sort(edges, (a, b) -> a[2] - b[2]);
-		DisjointSet ds = new DisjointSet(n);
-		for (int[] e : edges) {
-			int u = ds.find(e[0]);
-			int v = ds.find(e[1]);
-			if (u != v) {
-				r.add(new int[] {e[0], e[1]});
-				ds.union(u, v);
-			}			
-		}
-		
-		int[][] ret = r.toArray(new int[r.size()][]);
-		Arrays.sort(ret, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
-		return ret;
 	}
 
 }

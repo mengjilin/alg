@@ -3,20 +3,6 @@ package geeksforgeeks.array;
 import java.util.*;
 
 public class CountEmployees {
-
-	public static void main(String[] args) {
-		String[][] emps = new String[][] {
-			{ "A", "C" },
-			{ "B", "C" },
-			{ "C", "F" },
-			{ "D", "E" },
-			{ "E", "F" },
-			{ "F", "F" }, 
-		};
-		int[] r = countEmployees(emps);
-		int[] expected = new int[] {0,0,2,0,1,5};
-		System.out.println(0 == Arrays.compare(r, expected));
-	}
 	
 	static int[] countEmployees(String[][] emps) {
 		Collection<Employee> cr = countEmployees2(emps);
@@ -55,5 +41,19 @@ public class CountEmployees {
 		}
 		
 		return empMap.values();
+	}
+
+	public static void main(String[] args) {
+		String[][] emps = new String[][] {
+			{ "A", "C" },
+			{ "B", "C" },
+			{ "C", "F" },
+			{ "D", "E" },
+			{ "E", "F" },
+			{ "F", "F" }, 
+		};
+		int[] r = countEmployees(emps);
+		int[] expected = new int[] {0,0,2,0,1,5};
+		System.out.println(0 == Arrays.compare(r, expected));
 	}
 }

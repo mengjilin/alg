@@ -2,13 +2,6 @@ package alg.array;
 
 public class FindMajority {
 
-	public static void main(String[] args) {
-		int[] a = new int[] {2, 2, 3, 5, 2, 2, 6};
-		int r = findMajority(a);
-		int expected = 2;
-		System.out.println(r == expected);
-	}
-
 	// using Moore’s Voting Algorithm
 	static int findMajority(int[] a) {
 		int cand = getCandidate(a);
@@ -31,5 +24,12 @@ public class FindMajority {
 		}
 		
 		return cand;
+	}
+
+	public static void main(String[] args) {
+		int[] a = new int[] {2, 2, 3, 5, 2, 2, 6};
+		int r = findMajority(a);
+		int expected = 2;
+		System.out.println(r == expected);
 	}
 }
