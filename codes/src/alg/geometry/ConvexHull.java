@@ -1,4 +1,4 @@
-package alg.dc;
+package alg.geometry;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,9 +38,9 @@ public class ConvexHull {
 	/*
 	 * to compare the slope of line (a, b)[(b.y-a.y)/(b.x-a.x)] to the slope of line (b, c)[(c.y-b.y)/(c.x-b.x)]
 	 * return:
-	 * -1: if directed segments (a, b) and (b, c) are in clockwise order
-	 * 0 : if directed segments (a, b) and (b, c) are collinear
-	 * 1 : if directed segments (a, b) and (b, c) are in counter clockwise order
+	 * -1: if (a, b, c) is in clockwise or right turn
+	 * 0 : if (a, b, c) is in collinear
+	 * 1 : if (a, b, c) is in counter clockwise or left turn
 	 */
 	static int orientation(Point a, Point b, Point c) {
 		int diff = (c.y-b.y)*(b.x-a.x) - (b.y-a.y)*(c.x-b.x);
