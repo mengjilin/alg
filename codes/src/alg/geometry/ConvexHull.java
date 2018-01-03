@@ -36,28 +36,6 @@ public class ConvexHull {
 	}
 	
 	/*
-	 * to compare the slope of line (a, b)[(b.y-a.y)/(b.x-a.x)] to the slope of line (b, c)[(c.y-b.y)/(c.x-b.x)]
-	 * return:
-	 * -1: if (a, b, c) is in clockwise or right turn
-	 * 0 : if (a, b, c) is in collinear
-	 * 1 : if (a, b, c) is in counter clockwise or left turn
-	 */
-	static int orientation(Point a, Point b, Point c) {
-		int diff = (c.y-b.y)*(b.x-a.x) - (b.y-a.y)*(c.x-b.x);
-		return diff < 0 ? -1 : diff == 0 ? 0 : 1;
-	}
-	
-	/*
-	 * quadrant of a point 
-	 */
-	static int quad(Point p) {
-		if (p.x >= 0 && p.y >= 0) return 1;
-		if (p.x <= 0 && p.y >= 0) return 2;
-		if (p.x <= 0 && p.y <= 0) return 3;
-		return 4;
-	}
-	
-	/*
 	 * sort the points forming a convex polygon in [counter] clockwise order
 	 * 1. find a point inside the convex polygon(centroid)
 	 * 		a point with average x/y is inside the convex, 
@@ -77,7 +55,7 @@ public class ConvexHull {
 		Comparator<Point> comp = (a, b) -> {
 			Point p = new Point(a.x - mid.x, a.y - mid.y);
 			Point q = new Point(b.x - mid.x, b.y - mid.y);
-			if (quad(p) != quad(q)) return (quad(p) - quad(q)) * sign;
+			if (GeoCommon.quadrant(p) != GeoCommon.quadrant(q)) return (GeoCommon.quadrant(p) - GeoCommon.quadrant(q)) * sign;
 			return (p.y*q.x - q.y*p.x) * sign;
 		};
 		
@@ -97,7 +75,7 @@ public class ConvexHull {
 				int side = -2;
 				for (int k = 0; k < points.length; k++) {
 					if (k == i || k == j) continue;
-					int sideK = orientation(points[i], points[j], points[k]);
+					int sideK = GeoCommon.orientation(points[i], points[j], points[k]);
 					if (side == -2) side = sideK;
 					else if (side != sideK) {
 						side = 2;
@@ -159,10 +137,10 @@ public class ConvexHull {
 		for (i = arm, j = blm; !done; ) {
 			done = true;
 			// move the point in a if next point if in clockwise order
-			while (orientation(b[j], a[i], a[next = (i+1)%a.length]) <= 0) 
+			while (GeoCommon.orientation(b[j], a[i], a[next = (i+1)%a.length]) <= 0) 
 				i = next;
 			// move the point in b if next point if in counter clockwise order
-			while (orientation(a[i], b[j], b[next = (j+b.length-1)%b.length]) >= 0) {
+			while (GeoCommon.orientation(a[i], b[j], b[next = (j+b.length-1)%b.length]) >= 0) {
 				j = next;
 				done = false;
 			}
@@ -174,10 +152,10 @@ public class ConvexHull {
 		for (i = arm, j = blm; !done; ) {
 			done = true;
 			// move the point in a if next point if in counter clockwise order
-			while (orientation(b[j], a[i], a[next = (i+1)%a.length]) >= 0) 
+			while (GeoCommon.orientation(b[j], a[i], a[next = (i+1)%a.length]) >= 0) 
 				i = next;
 			// move the point in b if next point if in clockwise order
-			while (orientation(a[i], b[j], b[next = (j+b.length-1)%b.length]) <= 0) {
+			while (GeoCommon.orientation(a[i], b[j], b[next = (j+b.length-1)%b.length]) <= 0) {
 				j = next;
 				done = false;
 			}
@@ -198,14 +176,6 @@ public class ConvexHull {
 		}
 		
 		return r.toArray(new Point[r.size()]);
-	}
-	
-	static class Point {
-		int x, y;
-		Point(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
 	}
 
 	public static void main(String[] args) {

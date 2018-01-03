@@ -34,33 +34,14 @@ public class ConvexHullGrahamScan {
 	}
 	
 	/*
-	 * to compare the slope of line (a, b)[(b.y-a.y)/(b.x-a.x)] to the slope of line (b, c)[(c.y-b.y)/(c.x-b.x)]
-	 * return:
-	 * -1: if (a, b, c) is in clockwise or right turn
-	 * 0 : if (a, b, c) is in collinear
-	 * 1 : if (a, b, c) is in counter clockwise or left turn
-	 */
-	static int orientation(Point a, Point b, Point c) {
-		int diff = (c.y-b.y)*(b.x-a.x) - (b.y-a.y)*(c.x-b.x);
-		return diff < 0 ? -1 : diff == 0 ? 0 : 1;
-	}
-	
-	static int quadrant(Point p) {
-		if (p.x >= 0 && p.y >= 0) return 1;
-		if (p.x <= 0 && p.y >= 0) return 2;
-		if (p.x <= 0 && p.y <= 0) return 3;
-		return 4;
-	}
-	
-	/*
 	 * sort the points based on its polar angle from p0
 	 */
 	static Point[] sortAndDedupe(Point[] points) {
 		Comparator<Point> comp = (a, b) -> {
 			Point p = new Point(a.x - points[0].x, a.y - points[0].y);
 			Point q = new Point(b.x - points[0].x, b.y - points[0].y);
-			if (quadrant(p) != quadrant(q)) return quadrant(p) - quadrant(q);
-			int r = orientation(points[0], a, b);
+			if (GeoCommon.quadrant(p) != GeoCommon.quadrant(q)) return GeoCommon.quadrant(p) - GeoCommon.quadrant(q);
+			int r = GeoCommon.orientation(points[0], a, b);
 			if (r != 0) return -r;
 			return (p.x*p.x + p.y*p.y) - (q.x*q.x + q.y*q.y);
 		};
@@ -70,7 +51,7 @@ public class ConvexHullGrahamScan {
 		ArrayList<Point> ret = new ArrayList<>();
 		ret.add(points[0]);
 		for (int i = 1; i < points.length; i++) {
-			if (i == points.length-1 || orientation(points[0], points[i], points[i+1]) != 0)
+			if (i == points.length-1 || GeoCommon.orientation(points[0], points[i], points[i+1]) != 0)
 				ret.add(points[i]);
 		}
 		return ret.toArray(new Point[ret.size()]);
@@ -100,20 +81,12 @@ public class ConvexHullGrahamScan {
 			do {
 				b = st.pop();
 				a = st.peek();
-			} while (st.size() > 1 && orientation(a, b, c) <= 0);
+			} while (st.size() > 1 && GeoCommon.orientation(a, b, c) <= 0);
 			st.push(b);
 			st.push(c);
 		}
 		
 		return st.toArray(new Point[st.size()]);
-	}
-	
-	static class Point {
-		int x, y;
-		Point(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
 	}
 	
 	public static void main(String[] args) {
