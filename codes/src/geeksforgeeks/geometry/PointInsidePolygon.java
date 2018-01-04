@@ -6,7 +6,7 @@ import alg.geometry.Point;
 public class PointInsidePolygon {
 
 	/*
-	 * use a horizon ray, count the intersection with all sides of polygon
+	 * use a horizontal ray, count the intersection with all sides of polygon
 	 * corner case: only count if points of a side is under the ray 
 	 */
 	static boolean isPointInsidePolygon(int[][] polygon, int[] point) {
