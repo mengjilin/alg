@@ -16,16 +16,24 @@ public class Solution {
     }
     
     static void test() {
-		TreeSet<int[]> r = new TreeSet<>((a, b) -> 
-		Math.min(a[0], a[1]) != Math.min(b[0], b[1]) ? 
-		Math.min(a[0], a[1]) - Math.min(b[0], b[1]) : 
-		Math.max(a[0], a[1]) - Math.max(b[0], b[1]));
-
-		r.add(new int[] {1,3});
-		r.add(new int[] {3,2});
-		r.add(new int[] {3,1});
-		int[][] a = r.toArray(new int[r.size()][2]);
-    	System.out.println(a);
+		Node[] a = new Node[] {new Node(1,2), new Node(3,4)};
+		Node[] b = Arrays.copyOf(a, a.length);
+		a[0].i = 5;
+    	System.out.println(b);
     }
     
+    static class Node implements Cloneable {
+    	int i, j;
+    	Node (int i, int j) {
+    		this.i = i;
+    		this.j = j;
+    	}
+    	Node(Node other) {
+    		i = other.i;
+    		j = other.j;
+    	}
+    	public Node clone() {
+    		return new Node(i, j);
+    	}
+    }
 }

@@ -1,5 +1,8 @@
 package alg.backtracking;
 
+/*
+ * Time: O(n!), Space: O(n)
+ */
 public class KnightMove {
 
 	static int[] nextMoveX = {2, 1, -1, -2, -2, -1,  1,  2};

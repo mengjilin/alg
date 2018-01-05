@@ -1,5 +1,8 @@
 package geeksforgeeks.backtracking;
 
+/*
+ * Time: O(n!), Space: O(n)
+ */
 public class Queens {
 	
 	static void solveQueens(int n) {
