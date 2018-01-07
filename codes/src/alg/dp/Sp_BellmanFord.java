@@ -3,6 +3,7 @@ package alg.dp;
 import java.util.Arrays;
 
 /*
+ * Time(VE), Space(V), can detect negative cycles
  * for each vertex, loop for all edges, 'relax' each vertex
  */
 public class Sp_BellmanFord {

@@ -3,6 +3,7 @@ package alg.dp;
 import java.util.Arrays;
 
 /*
+ * Time(V^3), Space(V^2), can detect negative cycles
  * 3 loops for each vertex, 'relax' each vertex
  */
 public class Sp_FloydWarshall {

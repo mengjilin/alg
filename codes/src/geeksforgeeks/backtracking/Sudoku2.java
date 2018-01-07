@@ -13,7 +13,7 @@ public class Sudoku2 {
 	static boolean sudoku(int[][] grid) {
 		int[] next = getNext(grid);
 		if (next == null) {
-			//print(grid);
+			print(grid);
 			return true;
 		}
 		
@@ -31,7 +31,7 @@ public class Sudoku2 {
 	
 	static boolean isSafe(int[][] grid, int i, int j, int num) {
 		for (int s = 0; s < N; s++) {
-			if (grid[s][j] == num || grid[i][s] == num || grid[s/3+i/3*3][s%3+j/3*3] == num)
+			if (grid[s][j] == num || grid[i][s] == num || grid[s/NS+i/NS*NS][s%NS+j/NS*NS] == num)
 				return false;
 		}
 		return true;
@@ -40,7 +40,7 @@ public class Sudoku2 {
 	static void print(int[][] grid) {
 		for (int[] row : grid) {
 			for (int i : row)
-				System.out.print(i + " ");
+				System.out.print((char)(i + 'A'-1));
 			System.out.println();
 		}
 		System.out.println();
@@ -55,13 +55,11 @@ public class Sudoku2 {
 		}
 		return null;
 	}
-	
-	static final int N = 9;
 
 	/////////////////// version 2 /////////////////////////////////////////////////
 	static boolean sudoku2(int[][] grid, Node[][] nodes, TreeSet<Node> tree, Stack<Operation> ops) {
 		if (tree.isEmpty()) {
-			//print(grid);
+			print(grid);
 			return true;
 		}
 		
@@ -131,28 +129,29 @@ public class Sudoku2 {
 		for (int s = 0; s < N; s++) {
 			update(node, nodes[s][node.j], nodes, tree, ops);
 			update(node, nodes[node.i][s], nodes, tree, ops);
-			update(node, nodes[s/3+node.i/3*3][s%3+node.j/3*3], nodes, tree, ops);
+			update(node, nodes[s/NS+node.i/NS*NS][s%NS+node.j/NS*NS], nodes, tree, ops);
 		}
 	}
 
 	static void update(Node node, Node target, Node[][] nodes, TreeSet<Node> tree, Stack<Operation> ops) {
-		if (target != node && target.safeNums[node.num-1]) {
-			tree.remove(target);
+		if (target != node && target.safeNums[node.num-1] && tree.remove(target)) {
 			target.safeNums[node.num-1] = false;
 			target.safeNumsCnt--;
 			tree.add(target);
 			ops.add(new Operation(target.i, target.j, node.num-1));
 		}
 	}
+	
 	static void restore(Node node, Node[][] nodes, TreeSet<Node> tree, Stack<Operation> ops) {
 		while (!ops.isEmpty()) {
 			Operation op = ops.pop();
 			if (op.clearPot == -1) return;
 			Node target = nodes[op.i][op.j];
-			tree.remove(target);
-			target.safeNums[op.clearPot] = true;
-			target.safeNumsCnt++;
-			tree.add(target);
+			if (tree.remove(target)) {
+				target.safeNums[op.clearPot] = true;
+				target.safeNumsCnt++;
+				tree.add(target);
+			}
 		}
 	}
 	
@@ -160,7 +159,7 @@ public class Sudoku2 {
 	static boolean sudoku3(Node[][] nodes) {
 		Node node = getNext(nodes);
 		if (node == null) {
-			//print(nodes);
+			print(nodes);
 			return true;
 		}
 		
@@ -198,7 +197,7 @@ public class Sudoku2 {
 				ret[i][j].safeNumsCnt--;
 			}
 			
-			i = s/3+curr.i/3*3; j = s%3+curr.j/3*3;
+			i = s/NS+curr.i/NS*NS; j = s%NS+curr.j/NS*NS;
 			if (ret[i][j].num == 0 && ret[i][j].safeNums[num-1]) {
 				ret[i][j]= ret[i][j].clone();
 				ret[i][j].safeNums[num-1] = false;
@@ -223,7 +222,7 @@ public class Sudoku2 {
 	static void print(Node[][] nodes) {
 		for (Node[] row : nodes) {
 			for (Node node : row)
-				System.out.print(node.num + " ");
+				System.out.print((char)(node.num + 'A'-1));
 			System.out.println();
 		}
 		System.out.println();
@@ -243,9 +242,11 @@ public class Sudoku2 {
 		}
 		return sudoku3(nodes);
 	}
-	
+
+	static final int N = 25;
+	static final int NS = 5;
 	public static void main(String[] args) {
-		for (int i = 0; i < 150000; i++) {
+		for (int k = 0; k < 1; k++) {
 		int[][] grid = {
 			{3, 0, 6, 5, 0, 8, 4, 0, 0},
 	        {5, 2, 0, 0, 0, 0, 0, 0, 0},
@@ -268,7 +269,69 @@ public class Sudoku2 {
 			{0,0,0,0,0,0,2,0,0},
 			{6,0,0,0,0,5,0,1,0},
 			{0,4,7,1,0,0,3,9,0},};
-		sudoku3(grid);
+		//sudoku3(grid);
+			String[] sg = new String[] {
+				",,,F,,,,,,,L,,,,,,V,,,,,,",
+				",,,,,,,,,,,,S,,U,,,,,,,,,",
+				",,,,,,,,,,,,,,,B,,,,,,,,,",
+				",,,,,,,,,,,,,,,,W,,,,,,,I",
+				",,,,,,,,,,,,,,,,,,,,,,,,,",
+				",,,,,,,,,,,,,,H,,G,,,,,,,",
+				",,,,,,,,,,,,,,D,,,,,,,,,,",
+				",,,,,,,,,,,,,,,,,,,,,,,,,",
+				",,U,,,R,,,,,,,,,,,,FI,,,,",
+				",,,,,,,,,,,,,,,M,E,,,,W,,",
+				",,,,T,,,,,H,,,,,,,,,,,,,,",
+				",MC,,,K,,,,I,,,,,,,,,R,,,",
+				",,,Q,,,,,,,,,,,,,,,,,,,,,",
+				",H,,,X,,,,,,,,,,,,,,,I,,,",
+				",,,,,,,,U,,,,,,,,,,,,,,,,",
+				",,,,,S,,B,,,,,,,,,,,,,,,,",
+				",,,,,,,,C,,,,,,A,,,,,,,,,",
+				",,,,,,,,,,,,,,W,,,,,A,,,,",
+				",,H,,,,,,,,,,,,,F,,,,,,,,",
+				"Y,,,B,,H,,,,,,,,,,,,,,,,,",
+				",,,,,,,,,,,,H,,,,,R,,,M,,",
+				"E,,,,,,,,,,S,,,,,,,,,,,,,",
+				",,X,,,,,,,,,,,,,SD,B,,H,,",
+				"U,,,,,,,,,,,,,,,,,,,,,,,,",
+				",Y,,I,,A,N,,,,,,J,,,,,,,,",};
+			grid = new int[N][N];
+			for (int i = 0; i < N; i++) for (int j = 0; j < N; j++) {
+				grid[i][j] = sg[i].charAt(j) == ',' ? 0 : sg[i].charAt(j)-'A'+1;
+			}
+			//sudoku3(grid);
+			sg = new String[] {
+					".RF.NWJ..OT.KI..X.DMVCH.P",
+					".QPD.HK.NVSG.....U...TMIL",
+					".UMO.X..E.WC..AV.KBP.Q...",
+					"I.J.W....YDUO...ELH...FGS",
+					"...GS.CDT..R.Q.J..F.YUAB.",
+					".LWP.....TY.I.NS...QHO.C.",
+					"E.D.XKMW.A...F..CVY..RU.T",
+					".OV.TFG...H..PDMKB.RQ.JN.",
+					"Q.A.ICR.V..O..U.LF.DX.GS.",
+					"CF..GQ.SOL.ME.XNT.UJPY..W",
+					"..SWOUN.L..IV.BCGDJ.E.P.Q",
+					"R.N..MDT..KH.S.Y.O....LWB",
+					"...MV.EPXFLQAYC.W..S.JNKH",
+					".K..QRB.HCNWD...F.MEAG.TX",
+					"FTB..G.O.QJ.PX.K.IA.MVYU.",
+					".VGSL.YHK.I.N..W.RQ..EO.C",
+					".N.EH.VAJM.FSG.OP..Y.L.DR",
+					".MORK.WI.DC..H.TUX..JNB..",
+					".YIC.NP..R.T.BW..AE.G.KHM",
+					".BQ.FS.L...AX.J.D...U.I..",
+					"VS...D.KU..YBMQXI.GWR...E",
+					".X.HDPAJ..FSGK.Q..CVL.T..",
+					".G.KM..FIEVDL...B.TAN..PJ",
+					"Y..JP..Q.BU.WO..REL..KXA.",
+					"B.T.UO..GSA..JEP.N.HI.VF.",};
+				grid = new int[N][N];
+				for (int i = 0; i < N; i++) for (int j = 0; j < N; j++) {
+					grid[i][j] = sg[i].charAt(j) == '.' ? 0 : sg[i].charAt(j)-'A'+1;
+				}
+				sudoku(grid);
 		}
 	}
 

@@ -7,6 +7,7 @@ import alg.DisjointSet;
 import alg.Test;
 
 /*
+ * Time(ElogE), Space(V)
  * 1. create a disjoint set for all vertices
  * 2. sort the edges in non-decreasing order of their weight 
  * 3. for each edge, add it to mst if the two vertices are in different set. 

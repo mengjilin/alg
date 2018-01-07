@@ -1,7 +1,7 @@
 package alg.backtracking;
 
 /*
- * Time: O(n!), Space: O(n)
+ * Time(n!), Space(n)
  */
 public class KnightMove {
 

@@ -2,7 +2,11 @@ package alg.array;
 
 public class FindPair {
 
-	// find a pair of number with sum as the given value in a sorted array
+	/*
+	 * Time(n), Space(1)
+	 * find a pair of number with sum as the given value in a sorted array
+	 * check sum of two ends.
+	 */
 	static boolean findPair(int[] a, int sum) {
 		for (int i = 0, j = a.length - 1; i < j; ) {
 			if (a[i] + a[j] == sum) return true;

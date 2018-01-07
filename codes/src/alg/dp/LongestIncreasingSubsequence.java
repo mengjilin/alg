@@ -4,9 +4,27 @@ import java.util.*;
 
 public class LongestIncreasingSubsequence {
 
+	/*
+	 * Time(nlogn), Space(n)
+	 * replace the inactive list
+	 */
+	static int lis(int[] a) {
+		int[] endings = new int[a.length];
+		int len = 0;
+		for (int i = 0; i < a.length; i++) {
+			int idx = Arrays.binarySearch(endings, 0, len, a[i]);
+			if (idx < 0) {
+				endings[-idx-1] = a[i];
+				if (-idx-1 > len-1) len++;
+			}			
+		}
+		return len;
+	}
+
 	/* 
+	 * Time(n^2), Space(n)
 	 * let Ending(n) as the length of longest increasing subsequence ending with a[n],
-	 * Ending(n) = max(Ending(i) if a[i]>a[n], i=[0..n-1]) or 1
+	 * Ending(n) = max(Ending(i)+1 if a[i]<a[n], i=[0..n-1]) or 1
 	 */
 	static int dp(int[] a) {
 		int[] lisEnd = new int[a.length];
@@ -27,20 +45,6 @@ public class LongestIncreasingSubsequence {
 		}
 		
 		return max;
-	}
-
-	// bs: replace the inactive list
-	static int lis(int[] a) {
-		int[] endings = new int[a.length];
-		int len = 0;
-		for (int i = 0; i < a.length; i++) {
-			int idx = Arrays.binarySearch(endings, 0, len, a[i]);
-			if (idx < 0) {
-				endings[-idx-1] = a[i];
-				if (-idx-1 > len-1) len++;
-			}			
-		}
-		return len;
 	}
 
 	static int lisWithLogs(int[] a) {
@@ -80,7 +84,7 @@ public class LongestIncreasingSubsequence {
 			}
 			endingIdx[lo] = i;
 			if (lo > 1) pre[i] = endingIdx[lo-1];
-			if (len < lo + 1) len = lo + 1;
+			if (lo > len - 1) len++;
 		}
 		
 		int[] logs = new int[len];

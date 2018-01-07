@@ -8,6 +8,7 @@ import java.util.Stack;
 import alg.Test;
 
 /*
+ * Time(nlogn), Space(n)
  * Graham Scan to construct the convex hull
  * 1. select the bottom-most point as p0
  * 2. sort the other points based on its polar angle from p0, then only the farest is left for points with same angle.

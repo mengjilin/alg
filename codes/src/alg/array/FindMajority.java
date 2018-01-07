@@ -2,7 +2,10 @@ package alg.array;
 
 public class FindMajority {
 
-	// using Moore’s Voting Algorithm
+	/*
+	 * Time(n), Space(1)
+	 * using Moore’s Voting Algorithm
+	 */
 	static int findMajority(int[] a) {
 		int cand = getCandidate(a);
 		int cnt = 0;

@@ -5,7 +5,10 @@ import java.util.List;
 
 public class RotateArray {
 	
-	// see java.util.Collections.rotate
+	/*
+	 * Time(n), Space(1)
+	 * see java.util.Collections.rotate
+	 */
     static <T> void rotate(T[] list, int distance) {
     	int size = list.length;
         if (size == 0)

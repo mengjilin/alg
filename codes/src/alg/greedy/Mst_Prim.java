@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import alg.Test;
 
 /*
+ * Time(ElogE), Space(V)
  * 1. add all vertices to a minimum heap
  * 2. loop until heap is empty, extract min from heap to mst and update the distance of its all adjacent vertices.
  */

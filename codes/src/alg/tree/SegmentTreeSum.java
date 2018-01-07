@@ -1,5 +1,10 @@
 package alg.tree;
 
+/*
+ * build: Time(n), Space(n)
+ * query: Time(logn), Space(logn)
+ * update: Time(logn), Space(logn)
+ */
 public class SegmentTreeSum {
 
 	int[] data;
