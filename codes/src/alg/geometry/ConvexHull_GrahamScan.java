@@ -15,7 +15,7 @@ import alg.Test;
  * 3. put p0, p1, p2 into a stack, loop the remained points from p3 to pm and p0,
  * 4. extract top until (2ndTop, top, pi) is in counter clockwise (left turn), put pi into stack.
  */
-public class ConvexHullGrahamScan {
+public class ConvexHull_GrahamScan {
 	
 	static int[][] convexHull(int[][] points) {
 		Point[] ps = new Point[points.length];

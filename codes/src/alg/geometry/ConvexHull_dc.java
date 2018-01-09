@@ -14,7 +14,7 @@ import alg.Test;
  * divide all points into left convex and right convex, 
  * then merge them using upper/lower tangents
  */
-public class ConvexHull {
+public class ConvexHull_dc {
 	
 	static Point[] dc(Point[] points) {
 		if (points.length < 6) return bruteHull(points);
