@@ -16,10 +16,10 @@ public class Solution {
     }
     
     static void test() {
-		Node[] a = new Node[] {new Node(1,2), new Node(3,4)};
-		Node[] b = Arrays.copyOf(a, a.length);
-		a[0].i = 5;
-    	System.out.println(b);
+    	PriorityQueue<Node> q = new PriorityQueue<>((a, b) -> a.i - b.i);
+    	q.add(new Node(1, 2));
+    	q.add(new Node(1, 3));
+    	System.out.println(q.size());
     }
     
     static class Node implements Cloneable {
