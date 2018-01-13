@@ -5,6 +5,7 @@ import java.util.PriorityQueue;
 
 /*
  * backtracking using bfs with a branch&bound function
+ * !! bound function is incorrect !!
  */
 public class BranchBound_JobAssignment {
 
@@ -89,6 +90,15 @@ public class BranchBound_JobAssignment {
 	        { 8,  9, 98, 23},};
 		r = jobAssignment(costs);
 		exp = new int[] {2, 1, 0, 3};
+		System.out.println(Arrays.compare(r, exp) == 0);
+		 
+		costs = new int[][] {
+			{82, 83, 69, 90},
+	        {77, 37, 49, 92},
+	        {11, 69,  5, 86},
+	        {88, 79,  1, 23},};
+		r = jobAssignment(costs);
+		exp = new int[] {3, 1, 0, 2};
 		System.out.println(Arrays.compare(r, exp) == 0);
 	}
 

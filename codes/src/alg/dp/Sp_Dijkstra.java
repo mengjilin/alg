@@ -10,22 +10,11 @@ import java.util.*;
 public class Sp_Dijkstra {
 	
 	static int[] dijkstra(int n, int[][] edges) {
-		Graph g = new Graph();
-		g.n = 9;
-		g.edges = new Edge[n];
-		for (int i = 0; i < edges.length; i++) {
-			Edge e = new Edge(edges[i][1], edges[i][2]);
-			e.next = g.edges[edges[i][0]];
-			g.edges[edges[i][0]] = e;
-			
-			e = new Edge(edges[i][0], edges[i][2]);
-			e.next = g.edges[edges[i][1]];
-			g.edges[edges[i][1]] = e;
-		}
+		Graph g = Graph.from(n,  edges);
 		int[] dist = new int[g.n];
-		for (int i = 1; i < g.n; i++) dist[i] = INF;
+		Arrays.fill(dist, INF);
 		
-		TreeSet<Node> q = new TreeSet<>((a, b) -> a.d == b.d ? a.v - b.v : a.d - b.d);
+		TreeSet<Node> q = new TreeSet<>((a, b) -> a.d != b.d ? a.d - b.d : a.v - b.v);
 		q.add(new Node(0, 0));
 		for (int i = 1; i < g.n; i++) {
 			q.add(new Node(i, INF));
@@ -36,8 +25,8 @@ public class Sp_Dijkstra {
 			for (Edge e = g.edges[node.v]; e != null; e = e.next) {
 				if (dist[e.v] > dist[node.v] + e.w) {
 					Node tmp = new Node(e.v, dist[e.v]);
-					dist[e.v] = dist[node.v] + e.w;
 					boolean test = q.remove(tmp);
+					dist[e.v] = dist[node.v] + e.w;
 					tmp.d = dist[e.v];
 					q.add(tmp);
 				}
@@ -51,6 +40,21 @@ public class Sp_Dijkstra {
 	static class Graph {
 		int n;
 		Edge[] edges;
+		static Graph from(int n, int[][] edges) {
+			Graph g = new Graph();
+			g.n = 9;
+			g.edges = new Edge[n];
+			for (int i = 0; i < edges.length; i++) {
+				Edge e = new Edge(edges[i][1], edges[i][2]);
+				e.next = g.edges[edges[i][0]];
+				g.edges[edges[i][0]] = e;
+				
+				e = new Edge(edges[i][0], edges[i][2]);
+				e.next = g.edges[edges[i][1]];
+				g.edges[edges[i][1]] = e;
+			}
+			return g;
+		}
 	}
 	
 	static class Edge {
@@ -64,7 +68,7 @@ public class Sp_Dijkstra {
 	}
 	
 	static class Node {
-		int u, v;
+		int v;
 		int d; // distance from the selected set
 		Node(int v, int d) {
 			this.v = v;
