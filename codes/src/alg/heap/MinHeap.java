@@ -3,69 +3,85 @@ package alg.heap;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class MinHeap<E> {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+public class MinHeap<T> {
 	
-	public MinHeap(E[] data, Comparator<E> comparator) {
+	public MinHeap(T[] data) {
 		this.data = Arrays.copyOf(data, data.length);
-		dataCount = data.length;
+		dataCnt = data.length;
+		build();
+	}
+	
+	public MinHeap(T[] data, Comparator<? super T> comparator) {
+		this.data = Arrays.copyOf(data, data.length);
+		dataCnt = data.length;
 		this.comparator = comparator;
-		heapify();
+		build();
 	}
-	
-//	public void add(E e) {
-//		
-//	}
 
-	public E peek() {
-		if (dataCount == 0) return null;
-		return (E)data[0];
+	public int size() {
+		return dataCnt;
+	}
+
+	public T peek() {
+		if (dataCnt == 0) return null;
+		return (T)data[0];
 	}
 	
-	public E poll() {
-		if (dataCount == 0) return null;
-		swap(data, 0, dataCount - 1);
-		dataCount--;
-		for (int i = 0; i < dataCount; ) {
+	public T poll() {
+		if (dataCnt == 0) return null;
+		swap(data, 0, dataCnt - 1);
+		dataCnt--;
+		
+		for (int i = 0; i < dataCnt; ) {
 			int left = i * 2 + 1;
-			if (left < dataCount && comparator.compare((E)data[left], (E)data[i]) < 0) {
+			int right = i * 2 + 2;
+			if (left < dataCnt && lessThan(left, i) && (right >= dataCnt || lessThan(left, right))) {
 				swap(data, i, left);
 				i = left;
-			}
-			
-			int right = i * 2 + 2;
-			if (right < dataCount && comparator.compare((E)data[right], (E)data[i]) < 0) {
-			hthttp://yfain.github.io/Java4Kids/#_objectstp://yfain.github.io/Java4Kids/#_running_helloworld_in_idea	swap(data, i, right);
+			} else if (right < dataCnt && lessThan(right, i)) {
+				swap(data, i, right);
 				i = right;
+			} else {
+				break;
 			}
 		}
 		
-		return (E)data[dataCount];
+		return (T)data[dataCnt];
 	}
 	
 	private Object[] data;
-	private int dataCount;
-	private Comparator<E> comparator;
+	private int dataCnt;
+	private Comparator<? super T> comparator;
 	
-	private void heapify() {
-		for (int i = 0; i <= dataCount / 2; i++) {
+	private void build() {
+		for (int i = dataCnt / 2; i >= 0; i--) {
 			int left = i * 2 + 1;
-			if (left < dataCount && comparator.compare((E)data[left], (E)data[i]) < 0)
+			if (left < dataCnt && lessThan(left, i))
 				swap(data, i, left);
 			
 			int right = i * 2 + 2;
-			if (right < dataCount && comparator.compare((E)data[right], (E)data[i]) < 0)
+			if (right < dataCnt && lessThan(right, i))
 				swap(data, i, right);
 		}
 	}
 	
-	private static void swap(Object[] a, int i, int j) {
+	private boolean lessThan(int i, int j) {
+		if (comparator != null)
+			return comparator.compare((T)data[i], (T)data[j]) < 0;
+		return ((Comparable<? super T>)data[i]).compareTo((T)data[j]) < 0;
+	}
+	
+	private void swap(Object[] a, int i, int j) {
 		Object t = a[i];
 		a[i] = a[j];
 		a[j] = t;
+	}
+
+	public static void main(String[] args) {
+		Integer[] data = new Integer[] {2,4,5,6,7,8,9,3,4,5,45,6,5346,54,};
+		MinHeap<Integer> heap = new MinHeap<>(data);
+		while (heap.size() > 0) {
+			System.out.print(heap.poll() + ", ");
+		}
 	}
 }

@@ -3,6 +3,7 @@ package alg.dp;
 /*
  * Time(mn), Space(mn)
  * L(m, n) = max(L(m-1, n), L(m, n-1)) or L(m-1, n-1) + 1 if s1[m]==s2[n]
+ * This can be optimized for character set, see diff.exe
  */
 public class LongestCommonSubsequence {
 
