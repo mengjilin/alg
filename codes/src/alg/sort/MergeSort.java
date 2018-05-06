@@ -9,13 +9,13 @@ public class MergeSort {
 		int[] expected = a.clone();
 		mergesort(a, 0, a.length-1, new int[a.length]);
 		Arrays.sort(expected);
-		System.out.println(0 == Arrays.compare(a, expected));
+		System.out.println(Arrays.equals(a, expected));
 		
 		a = new int[]{1, 3, 6, 2, 454, 5, 456, 10, -8};
 		expected = a.clone();
 		mergesort(a, 0, a.length-1, new int[a.length]);
 		Arrays.sort(expected);
-		System.out.println(0 == Arrays.compare(a, expected));
+		System.out.println(Arrays.equals(a, expected));
 	}
 
 	static void mergesort(int[] a, int s, int t, int[] b) {

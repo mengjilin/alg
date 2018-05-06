@@ -38,6 +38,6 @@ public class Sp_BellmanFord {
 		};
 		int[] r = bellmanFord(8, edges);
 		int[] expected = {0, -1, 2, -2, 1, INF, INF, INF};
-		System.out.println(Arrays.compare(r, expected) == 0);
+		System.out.println(Arrays.equals(r, expected));
 	}
 }

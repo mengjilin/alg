@@ -9,13 +9,13 @@ public class MergeSortInplace {
 		int[] expected = a.clone();
 		mergesort(a, 0, a.length-1);
 		Arrays.sort(expected);
-		System.out.println(0 == Arrays.compare(a, expected));
+		System.out.println(Arrays.equals(a, expected));
 		
 		a = new int[]{1, 3, 6, 2, 454, 5, 456, 10, -8};
 		expected = a.clone();
 		mergesort(a, 0, a.length-1);
 		Arrays.sort(expected);
-		System.out.println(0 == Arrays.compare(a, expected));
+		System.out.println(Arrays.equals(a, expected));
 	}
 
 	static void mergesort(int[] a, int s, int t) {
@@ -26,9 +26,9 @@ public class MergeSortInplace {
 		merge(a, s, m, t);
 	}
 
-	/* The idea is to begin from last element of ar2[] and search it in ar1[]. 
+	/* The idea is to begin from last element of ar2[] and search it in ar1[].
 	 * If there is a greater element in ar1[], then we move last element of ar1[] to ar2[]. 
-	 * To keep ar1[] and ar2[] sorted, we need to place last element of ar2[] at correct place in ar1[]. 
+	 * To keep ar1[] and ar2[] sorted, we need to place current element of ar2[] at correct place in ar1[].
 	 * We can use Insertion Sort type of insertion for this. */
 	static void merge(int[] a, int s, int m, int t) {
 		for (int j = t; j >= m+1; j--) {

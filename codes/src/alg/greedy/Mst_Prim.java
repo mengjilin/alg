@@ -6,7 +6,7 @@ import java.util.TreeSet;
 import alg.Test;
 
 /*
- * Time(ElogE), Space(V)
+ * Time(ElogV), Space(V)
  * 1. add all vertices to a minimum heap
  * 2. loop until heap is empty, extract min from heap to mst and update the distance of its all adjacent vertices.
  */
@@ -94,7 +94,7 @@ public class Mst_Prim {
 		};
 		int[][] r = prim(4, edges);
 		int[][] exp = {{0, 1}, {0, 3}, {2, 3}};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 		
 		edges = new int[][] {
 			{0, 1, 4},
@@ -123,6 +123,6 @@ public class Mst_Prim {
 			{5, 6},
 			{6, 7},
 		};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 	}
 }

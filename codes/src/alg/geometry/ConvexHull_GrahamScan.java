@@ -94,7 +94,7 @@ public class ConvexHull_GrahamScan {
 		int[][] points = new int[][]{{0, 3}, {1, 1}, {2, 2}, {4, 4}, {0, 0}, {1, 2}, {3, 1}, {3, 3}};
 		int[][] r = convexHull(points);
 		int[][] exp = new int[][] {{0, 0}, {3, 1}, {4, 4}, {0, 3}};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 	}
 
 }

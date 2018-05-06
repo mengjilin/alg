@@ -9,13 +9,13 @@ public class QuickSort {
 		int[] expected = a.clone();
 		quicksort(a, 0, a.length-1);
 		Arrays.sort(expected);
-		System.out.println(0 == Arrays.compare(a, expected));
+		System.out.println(Arrays.equals(a, expected));
 		
 		a = new int[]{1, 3, 6, 2, 454, 5, 456, 10, -8};
 		expected = a.clone();
 		quicksort(a, 0, a.length-1);
 		Arrays.sort(expected);
-		System.out.println(0 == Arrays.compare(a, expected));
+		System.out.println(Arrays.equals(a, expected));
 	}
 
 	// sort the array[s..t], both s and t are inclusive

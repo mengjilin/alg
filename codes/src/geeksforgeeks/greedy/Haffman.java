@@ -58,6 +58,6 @@ public class Haffman {
 	    int[] freq = {5, 9, 12, 13, 16, 45};
 	    String[] r = huffman(arr, freq);
 	    String[] exp = new String[] {"f:0", "c:100", "d:101", "a:1100", "b:1101", "e:111"};
-	    System.out.println(Arrays.compare(r, exp) == 0);
+	    System.out.println(Arrays.equals(r, exp));
 	}
 }

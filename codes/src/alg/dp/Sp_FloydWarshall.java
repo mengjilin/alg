@@ -42,7 +42,7 @@ public class Sp_FloydWarshall {
             {INF, INF, INF, 0} };
         boolean result = true;
         for (int i = 0; i < r.length; i++)
-        	result &= Arrays.compare(r[i], expected[i]) == 0;
+        	result &= Arrays.equals(r[i], expected[i]);
         System.out.println(result);
 	}
 }

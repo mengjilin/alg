@@ -54,6 +54,6 @@ public class CountEmployees {
 		};
 		int[] r = countEmployees(emps);
 		int[] expected = new int[] {0,0,2,0,1,5};
-		System.out.println(0 == Arrays.compare(r, expected));
+		System.out.println(Arrays.equals(r, expected));
 	}
 }

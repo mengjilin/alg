@@ -29,7 +29,8 @@ public class GeoCommon {
 	 */
 	public static boolean isOnSegment(Point a, Point b, Point c) {
 		return a.x <= c.x && c.x <= b.x &&
-			   a.y <= c.y && c.y <= b.y;
+			   a.y <= c.y && c.y <= b.y &&
+				orientation(a, b, c) == 0;
 	}
 	
 	/*
@@ -41,20 +42,9 @@ public class GeoCommon {
 			orientation(b1, b2, a1) != orientation(b1, b2, a2))
 			return true;
 		
-		// case 1: b1 is on segment (a1, a2)
-		if (orientation(a1, a2, b1) == 0 && isOnSegment(a1, a2, b1))
-			return true;
-		
-		// case 2: b2 is on segment (a1, a2)
-		if (orientation(a1, a2, b2) == 0 && isOnSegment(a1, a2, b2))
-			return true;
-		
-		// case 3: a1 is on segment (b1, b2)
-		if (orientation(b1, b2, a1) == 0 && isOnSegment(b1, b2, a1))
-			return true;
-		
-		// case 4: a2 is on segment (b1, b2)
-		if (orientation(b1, b2, a2) == 0 && isOnSegment(b1, b2, a2))
+		// case 1: they are collinear
+		if (isOnSegment(a1, a2, b1) || isOnSegment(a1, a2, b2) ||
+				isOnSegment(b1, b2, a1) || isOnSegment(b1, b2, a2))
 			return true;
 		
 		return false;

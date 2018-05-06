@@ -95,6 +95,6 @@ public class Sp_Dijkstra {
 		};
 		int[] r = dijkstra(9, edges);
 		int[] expected = new int[] {0, 4, 15, 22, 21, 11, 9, 8, 15};
-		System.out.println(Arrays.compare(r, expected) == 0);
+		System.out.println(Arrays.equals(r, expected));
 	}
 }

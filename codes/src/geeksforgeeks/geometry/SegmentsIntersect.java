@@ -69,7 +69,7 @@ public class SegmentsIntersect {
 		int[][] lines = new int[][]{{1,3,3,3}, {2,5,12,1}, {3,1,12,3}, {6,4,10,4}, {7,1,9,1}, {0,4,8,3}};
 		int[][] r = segmentsIntersect(lines);
 		int[][] exp = new int[][]{{1,2}, {1,5}};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 	}
 
 }

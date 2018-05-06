@@ -38,7 +38,7 @@ public class RotateArray {
 		Integer[] a = new Integer[] {1,2,3,4,5,6,7};
 		rotate(a, 2);
 		Integer[] expected = new Integer[] {6,7,1,2,3,4,5}; 
-		System.out.println(0 == Arrays.compare(a, expected));
+		System.out.println(Arrays.equals(a, expected));
 
 	}
 }

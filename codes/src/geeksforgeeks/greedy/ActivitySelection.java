@@ -9,7 +9,7 @@ public class ActivitySelection {
 	    int t[] =  {2, 4, 6, 7, 9, 9};
 	    int[] r = activitySelection(s, t);
 	    int[] exp = {0, 1, 3, 4};
-	    System.out.println(Arrays.compare(r, exp) == 0);
+	    System.out.println(Arrays.equals(r, exp));
 	}
 	
 	static int[] activitySelection(int[] s, int[] t) {

@@ -81,7 +81,7 @@ public class BranchBound_JobAssignment {
 	        {7, 6, 9, 4},};
 		int[] r = jobAssignment(costs);
 		int[] exp = new int[] {1, 0, 2, 3};
-		System.out.println(Arrays.compare(r, exp) == 0);
+		System.out.println(Arrays.equals(r, exp));
 		 
 		costs = new int[][] {
 			{82, 83, 69, 92},
@@ -90,7 +90,7 @@ public class BranchBound_JobAssignment {
 	        { 8,  9, 98, 23},};
 		r = jobAssignment(costs);
 		exp = new int[] {2, 1, 0, 3};
-		System.out.println(Arrays.compare(r, exp) == 0);
+		System.out.println(Arrays.equals(r, exp));
 		 
 		costs = new int[][] {
 			{82, 83, 69, 90},
@@ -99,7 +99,7 @@ public class BranchBound_JobAssignment {
 	        {88, 79,  1, 23},};
 		r = jobAssignment(costs);
 		exp = new int[] {3, 1, 0, 2};
-		System.out.println(Arrays.compare(r, exp) == 0);
+		System.out.println(Arrays.equals(r, exp));
 	}
 
 }

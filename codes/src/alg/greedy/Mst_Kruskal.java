@@ -7,7 +7,7 @@ import alg.DisjointSet;
 import alg.Test;
 
 /*
- * Time(ElogE), Space(V)
+ * Time(ElogV), Space(V)
  * 1. create a disjoint set for all vertices
  * 2. sort the edges in non-decreasing order of their weight 
  * 3. for each edge, add it to mst if the two vertices are in different set. 
@@ -42,7 +42,7 @@ public class Mst_Kruskal {
 		};
 		int[][] r = kruskal(4, edges);
 		int[][] exp = {{0, 1}, {0, 3}, {2, 3}};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 		
 		edges = new int[][] {
 			{0, 1, 4},
@@ -71,7 +71,7 @@ public class Mst_Kruskal {
 			{5, 6},
 			{6, 7},
 		};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 	}
 
 }

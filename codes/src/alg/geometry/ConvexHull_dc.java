@@ -183,12 +183,12 @@ public class ConvexHull_dc {
 		int[][] points = new int[][]{{0, 0}, {0, 4}, {-4, 0}, {5, 0}, {0, -6}, {1, 0}};
 		int[][] r = convexHull(points);
 		int[][] exp = new int[][] {{-4, 0}, {0, -6}, {5, 0}, {0, 4}};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 		
 		points = new int[][]{{0,0}, {1,-4}, {-1,-5}, {-5,-3}, {-3,-1}, {-1,-3}, {-2,-2}, {-1,-1}, {-2,-1}, {-1,1}};
 		r = convexHull(points);
 		exp = new int[][] {{-5,-3}, {-1,-5}, {1,-4}, {0,0}, {-1,1}};
-		System.out.println(Test.isSame(r, exp));
+		System.out.println(Test.equals(r, exp));
 	}
 
 }
