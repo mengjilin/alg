@@ -1,4 +1,4 @@
-package alg;
+package alg.string;
 
 public class Kmp {
 
