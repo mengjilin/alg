@@ -12,8 +12,8 @@ public class LongestPalindromicSubstring_Manacher {
         for (int i = 2; i < n; i++) {
             L[i] = i > r ? 0 : Math.min(L[2*c-i], r - i);
             while ((i + L[i] + 1) % 2 == 0 ||
-                    ((i + L[i]) / 2 + 1 < s.length() && (i - L[i]) / 2> 0 &&
-                    s.charAt((i + L[i]) / 2 + 1) == s.charAt((i - L[i]) /2 - 1))) {
+                    (i + L[i] + 1 < n && i - L[i] - 1 >= 0 &&
+                    s.charAt((i + L[i] + 1) / 2) == s.charAt((i - L[i] - 1) / 2))) {
                 L[i]++;
             }
             if (L[i] > L[maxi]) maxi = i;
@@ -22,6 +22,7 @@ public class LongestPalindromicSubstring_Manacher {
                 r = c + L[c];
             }
         }
+
         return s.substring((maxi - L[maxi]) / 2, (maxi + L[maxi]) / 2);
     }
 
