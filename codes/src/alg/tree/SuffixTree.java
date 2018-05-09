@@ -5,7 +5,7 @@ public class SuffixTree {
         // check null
         _str = s;
 
-        int[] end = new int[] {0};
+        int[] end = new int[]{0};
         _root = new Node(-1, end);
 
         Node activeNode = _root;
@@ -55,7 +55,7 @@ public class SuffixTree {
                     if (s.charAt(i) == s.charAt(next.s + activeLength)) {
                         // If a newly created node waiting for it's suffix link to be set,
                         // then set suffix link of that waiting node to current active node.
-                        if(lastNewNode != null && activeNode != _root) {
+                        if (lastNewNode != null && activeNode != _root) {
                             lastNewNode.link = activeNode;
                             lastNewNode = null;
                         }
@@ -71,7 +71,7 @@ public class SuffixTree {
                     n.children[s.charAt(next.s) % 128] = next;
                     next.s += activeLength;
 
-                    if(lastNewNode != null) {
+                    if (lastNewNode != null) {
                         lastNewNode.link = n;
                     }
                     lastNewNode = n;
