@@ -4,6 +4,7 @@ package alg.tree;
  * build Ukkonen: Time(n), Space(n)
  * build naive: Time(n^2), Space(n)
  * search pattern: Time(m), Space(1)
+ * longest repeated substring: Time(n), Space(n)
  */
 public class SuffixTree {
     public SuffixTree(String s) {
@@ -11,7 +12,9 @@ public class SuffixTree {
         _str = s;
         _root = new Node(-1, new int[]{-1}, null);
 
+        //buildNaive();
         buildUkkonen();
+        setSuffixIndexDfs(_root, 0);
     }
 
     private void buildUkkonen() {
@@ -93,8 +96,6 @@ public class SuffixTree {
                 }
             }
         }
-
-        setSuffixIndex(_root, 0);
     }
 
     private void buildNaive() {
@@ -104,32 +105,26 @@ public class SuffixTree {
                 int c = _str.charAt(j) % 128;
                 if (n.children[c] == null) {
                     n.children[c] = new Node(j, new int[]{_str.length()-1}, _root);
-                    // n.children[c].hasLeaf = true;
                     break;
                 }
 
                 Node parent = n;
                 n = n.children[c];
-                int cj = n.s;
-                while (j < _str.length() && cj <= n.t[0] && _str.charAt(j) == _str.charAt(cj)) {
-                    j++; cj++;
-                }
-
-                if (cj <= n.t[0]) {
-                    Node d = new Node(n.s, new int[]{cj - 1}, _root);
-                    //d.hasLeaf = j == s.length();
-                    parent.children[c] = d;
-                    d.children[_str.charAt(cj) % 128] = n;
-                    n.s = cj;
-                    n = d;
-                } else if (j == _str.length()) {
-                    //n.hasLeaf = true;
+                for (int cj = n.s; j < _str.length() && cj <= n.t[0]; j++, cj++) {
+                    if (_str.charAt(j) != _str.charAt(cj)) {
+                        Node d = new Node(n.s, new int[]{cj - 1}, _root);
+                        parent.children[c] = d;
+                        d.children[_str.charAt(cj) % 128] = n;
+                        n.s = cj;
+                        n = d;
+                        break;
+                    }
                 }
             }
         }
     }
 
-    public boolean find(String pattern) {
+    public boolean search(String pattern) {
         Node n = _root;
         for (int i = 0; i < pattern.length(); ) {
             int subi = pattern.charAt(i) % 128;
@@ -148,14 +143,38 @@ public class SuffixTree {
         return false;
     }
 
-    private void setSuffixIndex(Node n, int labelLength) {
+    public String lrs() {
+        return longestRepeatedSubstringDfs(_root);
+    }
+
+    private String longestRepeatedSubstringDfs(Node n) {
+        if (n == null) return "";
+
+        int children = 0;
+        String max = "";
+        for (int i = 0; i < 128; i++) {
+            if (n.children[i] != null) {
+                children++;
+                String m = longestRepeatedSubstringDfs(n.children[i]);
+                if (max.length() < m.length()) max = m;
+            }
+        }
+
+        if (children >= 2) {
+            return (n == _root ? "" : _str.substring(n.s, n.t[0] + 1)) + max;
+        } else {
+            return "";
+        }
+    }
+
+    private void setSuffixIndexDfs(Node n, int labelLength) {
         if (n == null) return;
 
         boolean isLeaf = true;
         for (int i = 0; i < 128; i++) {
             if (n.children[i] != null) {
                 isLeaf = false;
-                setSuffixIndex(n.children[i], labelLength + n.children[i].length());
+                setSuffixIndexDfs(n.children[i], labelLength + n.children[i].length());
             }
         }
 
@@ -188,8 +207,26 @@ public class SuffixTree {
     }
 
     public  static void main(String[] args) {
-        String s = "abcabxabcd";
+        String s = "aa$";
         String p = "abx";
-        System.out.println(new SuffixTree(s).find(p) == true);
+        System.out.println(new SuffixTree(s).search(p) == false);
+
+        s = "GEEKSFORGEEKS$";
+        System.out.println("GEEKS".equals(new SuffixTree(s).lrs()));
+
+        s = "AAAAAAAAAA$";
+        System.out.println("AAAAAAAAA".equals(new SuffixTree(s).lrs()));
+
+        s = "ABCDEFG$";
+        System.out.println("".equals(new SuffixTree(s).lrs()));
+
+        s = "ABABABA$";
+        System.out.println("ABABA".equals(new SuffixTree(s).lrs()));
+
+        s = "ATCGATCGA$";
+        System.out.println("ATCGA".equals(new SuffixTree(s).lrs()));
+
+        s = "banana$";
+        System.out.println("ana".equals(new SuffixTree(s).lrs()));
     }
 }
