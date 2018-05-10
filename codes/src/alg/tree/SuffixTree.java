@@ -1,58 +1,62 @@
 package alg.tree;
 
+/*
+ * build Ukkonen: Time(n), Space(n)
+ * build naive: Time(n^2), Space(n)
+ * search pattern: Time(m), Space(1)
+ */
 public class SuffixTree {
     public SuffixTree(String s) {
         // check null
         _str = s;
+        _root = new Node(-1, new int[]{-1}, null);
 
+        buildUkkonen();
+    }
+
+    private void buildUkkonen() {
         int[] end = new int[]{0};
-        _root = new Node(-1, end);
 
         Node activeNode = _root;
-        int activeEdge = -1;
+        int activeEdgePos = 0;
         int activeLength = 0;
 
         // remainingSuffixCount tells how many suffixes yet to be added in tree
         int remainingSuffixCount = 0;
 
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < _str.length(); i++) {
 
             // Extension Rule 1, this takes care of extending all leaves created so far in tree
             end[0] = i;
 
             remainingSuffixCount++;
-            Node lastNewNode = null;
-            int c = s.charAt(i) % 128;
+            Node lastNewNode = null; // used to follow suffix link
 
             while (remainingSuffixCount > 0) {
                 if (activeLength == 0) {
-                    activeEdge = i;
+                    activeEdgePos = i;
                 }
 
-                if (activeNode.children[c] == null) {
-                    activeNode.children[c] = new Node(i, end);
+                if (activeNode.children[sub(activeEdgePos)] == null) {
+                    activeNode.children[sub(activeEdgePos)] = new Node(i, end, _root);
 
-                    // A new leaf edge is created in above line starting from an existing node (the current activeNode),
-                    // and if there is any internal node waiting for it's suffix link get reset,
-                    // point the suffix link from that last internal node to current activeNode.
-                    // Then set lastNewNode to NULL indicating no more node waiting for suffix link reset.
                     if (lastNewNode != null) {
                         lastNewNode.link = activeNode;
                         lastNewNode = null;
                     }
                 } else {
-                    Node next = activeNode.children[c];
+                    Node next = activeNode.children[sub(activeEdgePos)];
 
                     // walk down
                     if (activeLength >= next.length()) {
                         activeNode = next;
-                        activeEdge += next.length();
+                        activeEdgePos += next.length();
                         activeLength -= next.length();
                         continue;
                     }
 
                     // Extension Rule 3 (current character being processed is already on the edge)
-                    if (s.charAt(i) == s.charAt(next.s + activeLength)) {
+                    if (_str.charAt(i) == _str.charAt(next.s + activeLength)) {
                         // If a newly created node waiting for it's suffix link to be set,
                         // then set suffix link of that waiting node to current active node.
                         if (lastNewNode != null && activeNode != _root) {
@@ -65,16 +69,16 @@ public class SuffixTree {
                     }
 
                     // Extension Rule 2, where a new leaf edge and a new internal node get created
-                    Node n = new Node(next.s, new int[]{next.s + activeLength - 1});
-                    activeNode.children[s.charAt(activeEdge) % 128] = n;
-                    n.children[c] = new Node(i, end);
-                    n.children[s.charAt(next.s) % 128] = next;
+                    Node split = new Node(next.s, new int[]{next.s + activeLength - 1}, _root);
+                    activeNode.children[sub(activeEdgePos)] = split;
+                    split.children[sub(i)] = new Node(i, end, _root);
+                    split.children[sub(next.s + activeLength)] = next;
                     next.s += activeLength;
 
                     if (lastNewNode != null) {
-                        lastNewNode.link = n;
+                        lastNewNode.link = split;
                     }
-                    lastNewNode = n;
+                    lastNewNode = split;
                 }
 
                 // One suffix got added in tree, decrement the count of suffixes yet to be added.
@@ -82,7 +86,7 @@ public class SuffixTree {
                 if (activeNode == _root) {
                     if (activeLength > 0) {
                         activeLength--;
-                        activeEdge = i - remainingSuffixCount + 1;
+                        activeEdgePos = i - remainingSuffixCount + 1;
                     }
                 } else {
                     activeNode = activeNode.link;
@@ -93,23 +97,55 @@ public class SuffixTree {
         setSuffixIndex(_root, 0);
     }
 
-    public int find(String pattern) {
+    private void buildNaive() {
+        for (int i = 0; i < _str.length(); i++) {
+            Node n = _root;
+            for (int j = i; j < _str.length(); ) {
+                int c = _str.charAt(j) % 128;
+                if (n.children[c] == null) {
+                    n.children[c] = new Node(j, new int[]{_str.length()-1}, _root);
+                    // n.children[c].hasLeaf = true;
+                    break;
+                }
+
+                Node parent = n;
+                n = n.children[c];
+                int cj = n.s;
+                while (j < _str.length() && cj <= n.t[0] && _str.charAt(j) == _str.charAt(cj)) {
+                    j++; cj++;
+                }
+
+                if (cj <= n.t[0]) {
+                    Node d = new Node(n.s, new int[]{cj - 1}, _root);
+                    //d.hasLeaf = j == s.length();
+                    parent.children[c] = d;
+                    d.children[_str.charAt(cj) % 128] = n;
+                    n.s = cj;
+                    n = d;
+                } else if (j == _str.length()) {
+                    //n.hasLeaf = true;
+                }
+            }
+        }
+    }
+
+    public boolean find(String pattern) {
         Node n = _root;
         for (int i = 0; i < pattern.length(); ) {
-            int c = pattern.charAt(i) % 128;
-            if (n.children[c] == null) return -1;
+            int subi = pattern.charAt(i) % 128;
+            if (n.children[subi] == null) return false;
 
-            n = n.children[c];
+            n = n.children[subi];
             int ci = n.s;
             while (i < pattern.length() && ci <= n.t[0] && pattern.charAt(i) == _str.charAt(ci)) {
                 i++; ci++;
             }
 
-            if (i == pattern.length()) return ci - pattern.length();
-            if (ci <= n.t[0]) return -1;
+            if (i == pattern.length()) return true;
+            if (ci <= n.t[0]) return false;
         }
 
-        return -1;
+        return false;
     }
 
     private void setSuffixIndex(Node n, int labelLength) {
@@ -128,27 +164,32 @@ public class SuffixTree {
         }
     }
 
+    private int sub(int i) {
+        return _str.charAt(i) % 128;
+    }
+
     private String _str;
     private Node _root;
 
-    private static class Node {
+    private class Node {
         int s;
         int[] t; // int[1] for reference
+        Node link; // suffix link
         int index = -1; // leaf node: index >= 0
-        Node link;
         Node[] children = new Node[128];
 
-        Node(int s, int[] t) {
+        Node(int s, int[] t, Node link) {
             this.s = s;
             this.t = t;
+            this.link = link;
         }
 
         int length() { return t[0] - s + 1; }
     }
 
     public  static void main(String[] args) {
-        String s = "xabxac";
-        String p = "ab";
-        System.out.println(new SuffixTree(s).find(p) == 1);
+        String s = "abcabxabcd";
+        String p = "abx";
+        System.out.println(new SuffixTree(s).find(p) == true);
     }
 }

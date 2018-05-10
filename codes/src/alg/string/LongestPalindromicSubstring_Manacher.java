@@ -1,5 +1,9 @@
 package alg.string;
 
+/*
+ * Time(n), Space(n)
+ * L[i] stores the length of palindrome centered at i, and is initialized with the left mirror one L[i-left-mirror]
+ */
 public class LongestPalindromicSubstring_Manacher {
     public static String lps(String s) {
         int n = s.length() * 2 + 1;

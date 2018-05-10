@@ -1,5 +1,9 @@
 package alg.string;
 
+/*
+ * Time(n+m), Space(m)
+ * build the longest proper suffix against the pattern string, then use the same to match the source
+ */
 public class Kmp {
 
 	public static void main(String[] args) {
@@ -35,7 +39,7 @@ public class Kmp {
         return -1;
     }
  
-    // get the array of longest prefix suffix
+    // get the array of longest proper suffix
     static int[] buildLps(String s) 
     {
     	int[] lps = new int[s.length()];

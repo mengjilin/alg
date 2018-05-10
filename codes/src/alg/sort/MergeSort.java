@@ -2,6 +2,10 @@ package alg.sort;
 
 import java.util.Arrays;
 
+/*
+ * Time(nlogn), Space(n)
+ * recursive
+ */
 public class MergeSort {
 
 	public static void main(String[] args) {

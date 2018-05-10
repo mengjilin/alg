@@ -2,6 +2,10 @@ package alg.sort;
 
 import java.util.Arrays;
 
+/*
+ * Time(n^2), Space(1)
+ * insert each element in array2 into array2 like insert sort.
+ */
 public class MergeSortInplace {
 
 	public static void main(String[] args) {

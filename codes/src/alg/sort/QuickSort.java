@@ -2,6 +2,10 @@ package alg.sort;
 
 import java.util.Arrays;
 
+/*
+ * Time(nlog), Space(1)
+ * partition is important.
+ */
 public class QuickSort {
 
 	public static void main(String[] args) {
