@@ -2,6 +2,12 @@ package leetcode;
 
 import java.util.HashMap;
 
+/*
+ * tags: hash
+ * Time(n), Space(n)
+ * hash
+ * Given a string, find the length of the longest substring without repeating characters.
+ */
 public class Lc003 {
     public int lengthOfLongestSubstring(String s) {
         int ret = 0;
