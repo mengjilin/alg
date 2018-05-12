@@ -13,6 +13,7 @@ public class Solution {
     }
     
     static void test() {
-    	System.out.println("abc".substring(3));
+        String s = null;
+        System.out.println(s + "");
     }
 }
