@@ -3,7 +3,7 @@ package leetcode;
 import java.util.HashMap;
 
 /*
- * tags: hash
+ * tags: hash, two pointers
  * Time(n), Space(n)
  * hash
  * Given a string, find the length of the longest substring without repeating characters.
