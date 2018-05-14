@@ -8,8 +8,8 @@ import java.util.HashMap;
  * hash
  * Given a string, find the length of the longest substring without repeating characters.
  */
-public class Lc003 {
-    public int lengthOfLongestSubstring(String s) {
+public class Lc003LongestSubstringWithoutRepeatingCharacters {
+    public static int lengthOfLongestSubstring(String s) {
         int ret = 0;
         HashMap<Character, Integer> map = new HashMap<>();
         for (int i = 0, j = 0; i < s.length(); i++) {
@@ -25,9 +25,9 @@ public class Lc003 {
     }
     public static void main(String[] args) {
         String s = "abcabcbb";
-        System.out.println(new Lc003().lengthOfLongestSubstring(s) == 3);
+        System.out.println(lengthOfLongestSubstring(s) == 3);
 
         s = "pwwkew";
-        System.out.println(new Lc003().lengthOfLongestSubstring(s) == 3);
+        System.out.println(lengthOfLongestSubstring(s) == 3);
     }
 }
