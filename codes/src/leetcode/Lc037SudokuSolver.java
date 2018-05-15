@@ -3,23 +3,23 @@ package leetcode;
 import java.util.Arrays;
 
 /*
- * tags: backtracking, prune
+ * tags: backtracking, prune/heuristics
  * Time(n!), Space(n^2)
  */
 public class Lc037SudokuSolver {
     public static void solveSudoku(char[][] board) {
-        int[][] avail = new int[9][9];
+        int[][] avail = new int[board.length][board.length];
         for (int i = 0; i < avail.length; i++) {
-            Arrays.fill(avail[i], 0x1ff);
+            Arrays.fill(avail[i], (1 << board.length) - 1);
         }
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
-                if (board[i][j] != '.') {
+                if (board[i][j] != '.')
                     put(board, avail, i, j);
-                }
             }
         }
+
         solveSudokuRc(board, avail);
     }
 
@@ -29,7 +29,7 @@ public class Lc037SudokuSolver {
         int nextAvail = avail[next[0]][next[1]];
         for (int i = 0; i < board.length; i++) {
             if ((nextAvail & (1 << i)) != 0) {
-                board[next[0]][next[1]] = (char)(i + '1');
+                board[next[0]][next[1]] = (char) (i + 'A');
                 int[][] availBak = copy(avail);
                 put(board, avail, next[0], next[1]);
                 if (solveSudokuRc(board, avail)) return true;
@@ -49,17 +49,18 @@ public class Lc037SudokuSolver {
     }
 
     static void put(char[][] board, int[][] avail, int row, int col) {
-        int num = 0x1ff ^ (1 << (board[row][col] - '1'));
+        int box = (int) Math.sqrt(board.length);
+        int num = ((1 << board.length) - 1) ^ (1 << (board[row][col] - 'A'));
         for (int i = 0; i < board.length; i++) {
             avail[i][col] &= num;
             avail[row][i] &= num;
-            avail[(row/3)*3 + i/3][(col/3)*3 + i%3] &= num;
+            avail[(row / box) * box + i / box][(col / box) * box + i % box] &= num;
         }
     }
 
     static int[] selectNext(char[][] board, int[][] avail) {
         int[] ret = new int[]{-1, -1};
-        int minAvail = 10;
+        int minAvail = Integer.MAX_VALUE;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if (board[i][j] == '.') {
@@ -78,27 +79,86 @@ public class Lc037SudokuSolver {
     }
 
     public static void main(String[] args) {
-        char[][] board = new char[][] {
-                "53..7....".toCharArray(),
-                "6..195...".toCharArray(),
-                ".98....6.".toCharArray(),
-                "8...6...3".toCharArray(),
-                "4..8.3..1".toCharArray(),
-                "7...2...6".toCharArray(),
-                ".6....28.".toCharArray(),
-                "...419..5".toCharArray(),
-                "....8..79".toCharArray()};
-        char[][] exp = new char[][] {
-                "534678912".toCharArray(),
-                "672195348".toCharArray(),
-                "198342567".toCharArray(),
-                "859761423".toCharArray(),
-                "426853791".toCharArray(),
-                "713924856".toCharArray(),
-                "961537284".toCharArray(),
-                "287419635".toCharArray(),
-                "345286179".toCharArray()};
-        solveSudoku(board);
-        System.out.println(Arrays.deepEquals(exp, board));
+        long beginTime = System.nanoTime();
+        for (int k = 0; k < 5; k++) {
+            char[][] board = new char[][]{
+                    "EC..G....".toCharArray(),
+                    "F..AIE...".toCharArray(),
+                    ".IH....F.".toCharArray(),
+                    "H...F...C".toCharArray(),
+                    "D..H.C..A".toCharArray(),
+                    "G...B...F".toCharArray(),
+                    ".F....BH.".toCharArray(),
+                    "...DAI..E".toCharArray(),
+                    "....H..GI".toCharArray()};
+            char[][] exp = new char[][]{
+                    "ECDFGHIAB".toCharArray(),
+                    "FGBAIECDH".toCharArray(),
+                    "AIHCDBEFG".toCharArray(),
+                    "HEIGFADBC".toCharArray(),
+                    "DBFHECGIA".toCharArray(),
+                    "GACIBDHEF".toCharArray(),
+                    "IFAECGBHD".toCharArray(),
+                    "BHGDAIFCE".toCharArray(),
+                    "CDEBHFAGI".toCharArray()};
+            solveSudoku(board);
+            System.out.println(Arrays.deepEquals(exp, board));
+
+            board = new char[][]{
+                    "...F.......L......V......".toCharArray(),
+                    "............S..U.........".toCharArray(),
+                    "...............B.........".toCharArray(),
+                    "................W.......I".toCharArray(),
+                    ".........................".toCharArray(),
+                    "..............H..G.......".toCharArray(),
+                    "..............D..........".toCharArray(),
+                    ".........................".toCharArray(),
+                    "..U...R............FI....".toCharArray(),
+                    "...............M.E....W..".toCharArray(),
+                    "....T.....H..............".toCharArray(),
+                    ".MC...K....I.........R...".toCharArray(),
+                    "...Q.....................".toCharArray(),
+                    ".H...X...............I...".toCharArray(),
+                    "........U................".toCharArray(),
+                    ".....S..B................".toCharArray(),
+                    "........C......A.........".toCharArray(),
+                    "..............W.....A....".toCharArray(),
+                    "..H.............F........".toCharArray(),
+                    "Y...B..H.................".toCharArray(),
+                    "............H.....R...M..".toCharArray(),
+                    "E..........S.............".toCharArray(),
+                    "..X.............SD.B..H..".toCharArray(),
+                    "U........................".toCharArray(),
+                    ".Y..I..A.N......J........".toCharArray()};
+            exp = new char[][]{
+                    "NBQFAGTSHYCLEIJXDMVORKPUW".toCharArray(),
+                    "PIDJGCBKLRWXSYMUHAQENOFTV".toCharArray(),
+                    "TLRWHEPQIXFKOUVBGCSNDJAMY".toCharArray(),
+                    "VCEUKFMNOJBGDHAYWPTRQSLXI".toCharArray(),
+                    "XOSYMUVDAWNPQRTKLIFJCEBGH".toCharArray(),
+                    "IETBDNXCKOAUMFHPVGWSYLQRJ".toCharArray(),
+                    "MQWGFISPEHKYLNDJRTXUOAVCB".toCharArray(),
+                    "RSYKLAJVTQOBWPXNCHIDMFUEG".toCharArray(),
+                    "HVUNCDRLWMTEJGQOABYFIPKSX".toCharArray(),
+                    "OJAPXYUBGFSRVCIMQEKLTDWHN".toCharArray(),
+                    "FPIVTJQGRCHMUESDBKOAXYNWL".toCharArray(),
+                    "AMCDETKOYSLIBQNFXWUGHRJVP".toCharArray(),
+                    "JRKQWHFIDVPAGXOEYNLMSCTBU".toCharArray(),
+                    "BHGSUXLMNADWYVCQTRJPFIEKO".toCharArray(),
+                    "LNOXYPEWUBRJTKFHISCVGMDAQ".toCharArray(),
+                    "DAFCPSOUBIQHRJETNYGKWVXLM".toCharArray(),
+                    "GUMEQKWRCDXNFLYAOVBIJHSPT".toCharArray(),
+                    "KTJIRMNXFEGVCBWSPLHQAUYOD".toCharArray(),
+                    "SWHLVQYTPGUOADKRFJMXBNCIE".toCharArray(),
+                    "YXNOBVAHJLMTISPWEUDCKGRQF".toCharArray(),
+                    "CGBAJODEQKIFHTLVUXRYPWMNS".toCharArray(),
+                    "EDPHOLCFMUYSXWRIKQNTVBGJA".toCharArray(),
+                    "QFXMNWIJVPECKOUGSDABLTHYR".toCharArray(),
+                    "UKVRSBHYXTJDNAGLMOPWEQIFC".toCharArray(),
+                    "WYLTIRGASNVQPMBCJFEHUXODK".toCharArray(),};
+            solveSudoku(board);
+            System.out.println(Arrays.deepEquals(exp, board));
+        }
+        System.out.println("Total time: " + ((System.nanoTime() - beginTime) / 1000000D) + " ms");
     }
 }
