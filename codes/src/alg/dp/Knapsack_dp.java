@@ -7,27 +7,25 @@ package alg.dp;
  */
 public class Knapsack_dp {
 
-	// bounded: improve space
+	// bounded: improve space. weights are sorted
 	static int knapsack_dp(int[] values, int[] weights, int capacity) {
-		int[] maxF = new int[capacity+1];
-		int[] prev = new int[capacity+1];
+		int[] maxF = new int[capacity + 1];
 		for (int i = 0; i < values.length; i++) {
-			for (int w = 1; w <= capacity; w++) {
-				prev[w] = maxF[w];
+			for (int w = capacity; w > 0; w--) { // reverse iteration to avoid items being reused.
 				if (w >= weights[i])
-					maxF[w] = Math.max(prev[w], prev[w-weights[i]] + values[i]);
+					maxF[w] = Math.max(maxF[w], maxF[w - weights[i]] + values[i]);
 			}
 		}
 		return maxF[capacity];
 	}
-	
+
 	// bounded: standard
 	static int knapsack_dp2(int[] values, int[] weights, int capacity) {
-		int[][] maxF = new int[values.length+1][capacity+1];
+		int[][] maxF = new int[values.length + 1][capacity + 1];
 		for (int i = 1; i <= values.length; i++) {
 			for (int w = 1; w <= capacity; w++) {
-				if (w < weights[i-1]) maxF[i][w] = maxF[i-1][w];
-				else maxF[i][w] = Math.max(maxF[i-1][w], maxF[i-1][w-weights[i-1]] + values[i-1]);
+				if (w < weights[i - 1]) maxF[i][w] = maxF[i - 1][w];
+				else maxF[i][w] = Math.max(maxF[i - 1][w], maxF[i - 1][w - weights[i - 1]] + values[i - 1]);
 			}
 		}
 		return maxF[values.length][capacity];
@@ -35,22 +33,22 @@ public class Knapsack_dp {
 
 	// unbounded
 	static int knapsack_dp_unbound(int[] values, int[] weights, int capacity) {
-		int[] maxF = new int[capacity+1];
+		int[] maxF = new int[capacity + 1];
 		for (int w = 1; w <= capacity; w++) {
 			for (int i = 0; i < values.length; i++) {
 				if (w >= weights[i])
-					maxF[w] = Math.max(maxF[w], maxF[w-weights[i]] + values[i]);
+					maxF[w] = Math.max(maxF[w], maxF[w - weights[i]] + values[i]);
 			}
 		}
 		return maxF[capacity];
 	}
-	
+
 	public static void main(String[] args) {
 		int[] values = {60, 100, 120};
-	    int[] weights = {10, 20, 30};
-	    System.out.println(220 == knapsack_dp(values, weights, 50));
-	    System.out.println(220 == knapsack_dp2(values, weights, 50));
-	    System.out.println(300 == knapsack_dp_unbound(values, weights, 50));
+		int[] weights = {10, 20, 30};
+		System.out.println(220 == knapsack_dp(values, weights, 50));
+		System.out.println(220 == knapsack_dp2(values, weights, 50));
+		System.out.println(300 == knapsack_dp_unbound(values, weights, 50));
 	}
 
 }

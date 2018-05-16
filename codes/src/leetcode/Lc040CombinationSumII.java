@@ -13,44 +13,30 @@ import java.util.*;
  */
 public class Lc040CombinationSumII {
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
-        return combinationSumDp(candidates, target);
-        //return combinationSumBacktracking(candidates, target);
+        //return combinationSumDp(candidates, target);
+        return combinationSumBacktracking(candidates, target);
     }
 
     static List<List<Integer>> combinationSumDp(int[] candidates, int target) {
-        ArrayList<HashMap<List<Integer>, Boolean>> dp = new ArrayList<>(target + 1);
-        for (int w = 0; w <= target; w++) dp.add(new HashMap<>());
+        ArrayList<HashSet<List<Integer>>> dp = new ArrayList<>(target + 1);
+        for (int w = 0; w <= target; w++) dp.add(new HashSet<>());
         Arrays.sort(candidates);
 
         for (int i = 0; i < candidates.length; i++) {
-            ArrayList<HashMap<List<Integer>, Boolean>> prev = deepCopy(dp);
-
-            for (int w = 0; w <= target; w++) {
+            for (int w = target; w >= 0; w--) { // reverse iteration to avoid item reused.
                 if (w == candidates[i]) {
-                    List<Integer> cl = new ArrayList<>(Arrays.asList(candidates[i]));
-                    if (!dp.get(w).containsKey(cl)) dp.get(w).put(cl, true);
+                    dp.get(w).add(new ArrayList<>(Arrays.asList(candidates[i])));
                 } else if (w > candidates[i]) {
-                    for (List<Integer> pl : prev.get(w - candidates[i]).keySet()) {
+                    for (List<Integer> pl : dp.get(w - candidates[i])) {
                         List<Integer> cl = new ArrayList<>(pl);
                         cl.add(candidates[i]);
-                        if (!dp.get(w).containsKey(cl)) dp.get(w).put(cl, true);
+                        dp.get(w).add(cl);
                     }
                 }
             }
         }
 
-        return new ArrayList<>(dp.get(target).keySet());
-    }
-
-    static ArrayList<HashMap<List<Integer>, Boolean>> deepCopy(ArrayList<HashMap<List<Integer>, Boolean>> from) {
-        ArrayList<HashMap<List<Integer>, Boolean>> to = new ArrayList<>(from.size());
-        for (HashMap<List<Integer>, Boolean> lli : from) {
-            HashMap<List<Integer>, Boolean> pli = new HashMap<>();
-            for (List<Integer> li : lli.keySet()) pli.put(li, true);
-            to.add(pli);
-        }
-
-        return to;
+        return new ArrayList<>(dp.get(target));
     }
 
     static List<List<Integer>> combinationSumBacktracking(int[] candidates, int target) {
