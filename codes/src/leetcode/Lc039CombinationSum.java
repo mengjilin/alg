@@ -67,7 +67,7 @@ public class Lc039CombinationSum {
     }
 
     public static void main(String[] args) {
-        int[] a = new int[]{2, 3, 6, 7};
+        int[] a = new int[]{1, 2, 3, 6, 7};
         List<List<Integer>> exp = Arrays.asList(
                 Arrays.asList(2, 2, 3),
                 Arrays.asList(7));

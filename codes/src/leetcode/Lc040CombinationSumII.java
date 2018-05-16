@@ -1,5 +1,7 @@
 package leetcode;
 
+import alg.Test;
+
 import java.util.*;
 
 /*
@@ -11,50 +13,40 @@ import java.util.*;
  */
 public class Lc040CombinationSumII {
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
-        //return combinationSumDp(candidates, target);
-        return combinationSumBacktracking(candidates, target);
+        return combinationSumDp(candidates, target);
+        //return combinationSumBacktracking(candidates, target);
     }
 
-    static List<List<Integer>> combinationSumDp(int[] nums, int target) {
-        Vector<List<List<Integer>>> dp = new Vector<>(target + 1);
-        Vector<HashMap<List<Integer>, Boolean>> dup = new Vector<>(target + 1);
-        for (int w = 0; w <= target; w++) {
-            dp.add(new ArrayList<>());
-            dup.add(new HashMap<>());
-        }
-        Arrays.sort(nums);
+    static List<List<Integer>> combinationSumDp(int[] candidates, int target) {
+        ArrayList<HashMap<List<Integer>, Boolean>> dp = new ArrayList<>(target + 1);
+        for (int w = 0; w <= target; w++) dp.add(new HashMap<>());
+        Arrays.sort(candidates);
 
-        for (int i = 0; i < nums.length; i++) {
-            Vector<List<List<Integer>>> prev = copy(dp);
+        for (int i = 0; i < candidates.length; i++) {
+            ArrayList<HashMap<List<Integer>, Boolean>> prev = deepCopy(dp);
 
             for (int w = 0; w <= target; w++) {
-                if (w == nums[i]) {
-                    List<Integer> cl = new ArrayList<>(Arrays.asList(nums[i]));
-                    if (!dup.get(w).containsKey(cl)) {
-                        dup.get(w).put(cl, true);
-                        dp.get(w).add(cl);
-                    }
-                } else if (w > nums[i]) {
-                    for (List<Integer> pl : prev.get(w - nums[i])) {
+                if (w == candidates[i]) {
+                    List<Integer> cl = new ArrayList<>(Arrays.asList(candidates[i]));
+                    if (!dp.get(w).containsKey(cl)) dp.get(w).put(cl, true);
+                } else if (w > candidates[i]) {
+                    for (List<Integer> pl : prev.get(w - candidates[i]).keySet()) {
                         List<Integer> cl = new ArrayList<>(pl);
-                        cl.add(nums[i]);
-                        if (!dup.get(w).containsKey(cl)) {
-                            dup.get(w).put(cl, true);
-                            dp.get(w).add(cl);
-                        }
+                        cl.add(candidates[i]);
+                        if (!dp.get(w).containsKey(cl)) dp.get(w).put(cl, true);
                     }
                 }
             }
         }
 
-        return dp.get(target);
+        return new ArrayList<>(dp.get(target).keySet());
     }
 
-    static Vector<List<List<Integer>>> copy(Vector<List<List<Integer>>> from) {
-        Vector<List<List<Integer>>> to = new Vector<>(from.size());
-        for (List<List<Integer>> lli : from) {
-            List<List<Integer>> pli = new ArrayList<>();
-            for (List<Integer> li : lli) pli.add(li);
+    static ArrayList<HashMap<List<Integer>, Boolean>> deepCopy(ArrayList<HashMap<List<Integer>, Boolean>> from) {
+        ArrayList<HashMap<List<Integer>, Boolean>> to = new ArrayList<>(from.size());
+        for (HashMap<List<Integer>, Boolean> lli : from) {
+            HashMap<List<Integer>, Boolean> pli = new HashMap<>();
+            for (List<Integer> li : lli.keySet()) pli.put(li, true);
             to.add(pli);
         }
 
@@ -81,18 +73,20 @@ public class Lc040CombinationSumII {
     }
 
     public static void main(String[] args) {
-        int[] a = new int[]{10, 1, 2, 7, 6, 1, 5};
+        List<List<Integer>> res = combinationSum(new int[]{10, 1, 2, 7, 6, 1, 5}, 8);
+        res.sort(Test.LISTLIST_COMP);
         List<List<Integer>> exp = Arrays.asList(
-                Arrays.asList(1, 2, 5),
                 Arrays.asList(1, 1, 6),
-                Arrays.asList(2, 6),
-                Arrays.asList(1, 7));
-        System.out.println(exp.equals(combinationSum(a, 8)));
+                Arrays.asList(1, 2, 5),
+                Arrays.asList(1, 7),
+                Arrays.asList(2, 6));
+        System.out.println(exp.equals(res));
 
-        a = new int[]{2, 5, 2, 1, 2};
+        res = combinationSum(new int[]{2, 5, 2, 1, 2}, 5);
+        res.sort(Test.LISTLIST_COMP);
         exp = Arrays.asList(
                 Arrays.asList(1, 2, 2),
                 Arrays.asList(5));
-        System.out.println(exp.equals(combinationSum(a, 5)));
+        System.out.println(exp.equals(res));
     }
 }
