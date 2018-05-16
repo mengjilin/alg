@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /*
  * tags: unbounded-knapsack, dp, backtracking
@@ -19,26 +16,36 @@ public class Lc039CombinationSum {
     }
 
     static List<List<Integer>> combinationSumDp(int[] candidates, int target) {
-        ArrayList<List<List<Integer>>> dp = new ArrayList<>(target + 1);
+        Vector<List<List<Integer>>> dp = new Vector<>(target + 1);
         for (int w = 0; w <= target; w++) dp.add(new ArrayList<>());
         Arrays.sort(candidates);
 
         for (int i = 0; i < candidates.length; i++) {
             for (int w = 0; w <= target; w++) {
-                List<List<Integer>> curr = dp.get(w);
                 if (w == candidates[i]) {
-                    curr.add(new ArrayList<>(Arrays.asList(candidates[i])));
+                    dp.get(w).add(new ArrayList<>(Arrays.asList(candidates[i])));
                 } else if (w > candidates[i]) {
                     for (List<Integer> pl : dp.get(w - candidates[i])) {
                         List<Integer> cl = new ArrayList<>(pl);
                         cl.add(candidates[i]);
-                        curr.add(cl);
+                        dp.get(w).add(cl);
                     }
                 }
             }
         }
 
         return dp.get(target);
+    }
+
+    static Vector<List<List<Integer>>> copy(Vector<List<List<Integer>>> from) {
+        Vector<List<List<Integer>>> to = new Vector<>(from.size());
+        for (List<List<Integer>> lli : from) {
+            List<List<Integer>> pli = new ArrayList<>();
+            for (List<Integer> li : lli) pli.add(li);
+            to.add(pli);
+        }
+
+        return to;
     }
 
     static List<List<Integer>> combinationSumBacktracking(int[] candidates, int target) {
