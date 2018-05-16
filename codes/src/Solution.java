@@ -13,10 +13,5 @@ public class Solution {
     }
     
     static void test() {
-        int[][] a = new int[2][2];
-        a[0][1] = 3;
-        int[][] b = a.clone();
-        b[0][1] = 4;
-        System.out.println(a[1][1]);
     }
 }

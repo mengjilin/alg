@@ -6,29 +6,56 @@ import java.util.LinkedList;
 import java.util.List;
 
 /*
- * tags: dp
+ * tags: unbounded-knapsack, dp, backtracking
  * Time(nw), Space(nw)
- * dp[n][w] = Sum(a[i] + dp[i][w-a[i]], i=0..n-1)
+ * dp[w] = [dp[w-a[i]],a[i]] (i=0..n-1)
+ * backtracking: Time(n!), Space(n!)
+ * candidates are unbounded
  */
 public class Lc039CombinationSum {
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
-        ArrayList<ArrayList<List<List<Integer>>>> dp = new ArrayList<>(candidates.length);
+        return combinationSumDp(candidates, target);
+        //return combinationSumBacktracking(candidates, target);
+    }
+
+    static List<List<Integer>> combinationSumDp(int[] candidates, int target) {
+        ArrayList<List<List<Integer>>> dp = new ArrayList<>(target + 1);
+        for (int w = 0; w <= target; w++) dp.add(new ArrayList<>());
         Arrays.sort(candidates);
-        for (int i = 0; i < candidates.length; i++) {
-            ArrayList<List<List<Integer>>> li = new ArrayList<>(target + 1);
-            dp.add(li);
-            for (int w = 0; w <= target; w++)
-                li.add(new LinkedList<>());
-        }
 
         for (int i = 0; i < candidates.length; i++) {
-        for (int w = 0; w <= target; w++) {
-            if (w >= candidates[i]) {
-                List<Integer> li = new LinkedList<>(dp.get(i).get(w - candidates[i]));
-                li.add(candidates[i]);
-                dp.get(i).add(li);
+            for (int w = 0; w <= target; w++) {
+                List<List<Integer>> curr = dp.get(w);
+                if (w == candidates[i]) {
+                    curr.add(new ArrayList<>(Arrays.asList(candidates[i])));
+                } else if (w > candidates[i]) {
+                    for (List<Integer> pl : dp.get(w - candidates[i])) {
+                        List<Integer> cl = new ArrayList<>(pl);
+                        cl.add(candidates[i]);
+                        curr.add(cl);
+                    }
+                }
             }
-            }
+        }
+
+        return dp.get(target);
+    }
+
+    static List<List<Integer>> combinationSumBacktracking(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> ret = new ArrayList<>();
+        combinationSumBacktrackingRc(candidates, target, 0, ret, new ArrayList<>());
+        return ret;
+    }
+
+    static void combinationSumBacktrackingRc(int[] candidates, int remain, int start, List<List<Integer>> result, List<Integer> selected) {
+        if (remain < 0) return;
+        if (remain == 0) result.add(new ArrayList(selected));
+
+        for (int i = start; i < candidates.length; i++) {
+            selected.add(candidates[i]);
+            combinationSumBacktrackingRc(candidates, remain - candidates[i], i, result, selected);
+            selected.remove(selected.size() - 1); // backtracking
         }
     }
 
@@ -41,7 +68,7 @@ public class Lc039CombinationSum {
 
         a = new int[]{2, 3, 5};
         exp = Arrays.asList(
-                Arrays.asList(2, 2, 2),
+                Arrays.asList(2, 2, 2, 2),
                 Arrays.asList(2, 3, 3),
                 Arrays.asList(3, 5));
         System.out.println(exp.equals(combinationSum(a, 8)));
