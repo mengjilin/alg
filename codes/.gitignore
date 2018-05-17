@@ -1,6 +1,6 @@
 /bin/
 /**/*.class
 /obj/
-/.idea/
+/out/
 /.idea/
 /.vs/

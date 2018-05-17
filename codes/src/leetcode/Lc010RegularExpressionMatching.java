@@ -40,16 +40,20 @@ public class Lc010RegularExpressionMatching {
 
     /*
      * Time(nm), Space(nm)
+     * dp[i][j] = dp[i][j-2] if p[j] == '*', match 0
+     *            dp[i-1][j] if p[j] == '*', match 1, p[j-1]=='.' || s[i]==p[j-1]
+     *            dp[i-1][j-1] if match 1, p[j]=='.' || s[i]==p[j]
+     *            false
      */
     public static boolean isMatchDp2(String s, String p) {
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
         dp[0][0] = true;
-        for (int j = 1; j < p.length() && p.charAt(j) == '*'; j += 2) dp[0][j + 1] = true;
 
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = 0; j < p.length(); j++) {
-                dp[i + 1][j + 1] = p.charAt(j) == '*' ? dp[i + 1][j] || dp[i][j + 1] || dp[i][j]
-                        : (p.charAt(j) == '.' || s.charAt(i) == p.charAt(j)) && dp[i][j];
+        for (int i = 0; i <= s.length(); i++) {
+            for (int j = 1; j <= p.length(); j++) {
+                boolean pm = i > 0 && j > 1 && (p.charAt(j-2) == '.' || s.charAt(i-1) == p.charAt(j-2));
+                boolean cm = i > 0 && (p.charAt(j-1) == '.' || s.charAt(i-1) == p.charAt(j-1));
+                dp[i][j] = p.charAt(j-1) == '*' ? dp[i][j-2] || pm && dp[i-1][j] : cm && dp[i-1][j-1];
             }
         }
 
