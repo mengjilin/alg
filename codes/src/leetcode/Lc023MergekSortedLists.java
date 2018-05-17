@@ -4,7 +4,7 @@ package leetcode;
  * tags: two pointers, linked list, merge
  * Time(n), Space(1)
  */
-public class Lc23MergekSortedLists {
+public class Lc023MergekSortedLists {
     public static ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) return null;
         ListNode dummy = new ListNode(0);
