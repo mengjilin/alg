@@ -3,15 +3,39 @@ using System.Collections.Generic;
 using System.Text;
 
 /*
- * tags: dp, recursive
- * DP: Time(n^2), Space(n)
- * dp[i] = min(dp[j] + 1, if j+a[j]>=i, j=0..i-1)
+ * tags: greedy, stack, dp
  */
 namespace leetcode
 {
     public class Lc045JumpGameII
     {
         public int Jump(int[] nums)
+        {
+            return JumpGreedy(nums);
+        }
+
+        // udpate the farest as far as it can
+        public int JumpGreedy(int[] nums)
+        {
+            int step = 0, far = 0, farest = 0;
+
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                far = Math.Max(far, i + nums[i]);
+                if (i == farest)
+                {
+                    farest = far;
+                    step++;
+                }
+            }
+
+            return step;
+        }
+
+        /*
+         * dp[i] = min(dp[j] + 1, if j+a[j]>=i, j=0..i-1)
+         */
+        public int JumpDp(int[] nums)
         {
             int[] dp = new int[nums.Length];
 
@@ -25,25 +49,29 @@ namespace leetcode
             return dp[nums.Length - 1];
         }
 
-        // udpate all accessible positions from current
-        public int JumpTrick(int[] nums)
+        /*
+         * from the end to the beginning, pop the stack until 
+         * the current one is not able to jump to the 2nd one in the stack, then push the current one.
+         */
+        public int JumpStack(int[] nums)
         {
-            int[] dp = new int[nums.Length];
-            Array.Fill(dp, int.MaxValue);
-            dp[0] = 0;
+            if (nums.Length < 2) return 0;
+            var stack = new int[nums.Length][]; // array: index, jump
+            int slen = 0;
 
-            for (int i = 0; i < nums.Length; i++)
+            for (int i = nums.Length - 1; i >= 0; i--)
             {
-                for (int j = i + 1; j < nums.Length && j <= i + nums[i]; j++)
-                    dp[j] = Math.Min(dp[j], dp[i] + 1);
+                while (slen >= 2 && i + nums[i] >= stack[slen - 2][0]) slen--;
+                stack[slen++] = new int[] { i, nums[i] };
             }
 
-            return dp[nums.Length - 1];
+            return slen - 1;
         }
 
         public void Test()
         {
-            Console.WriteLine(JumpTrick(new int[] { 2, 3, 1, 1, 4 }) == 2);
+            Console.WriteLine(Jump(new int[] { 2, 3, 1, 1, 4 }) == 2);
+            Console.WriteLine(Jump(new int[] { 1, 2, 1, 1, 1 }) == 3);
         }
     }
 }
