@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc047PermutationsII().Test();
+            new leetcode.Lc050Pow().Test();
 
             Console.WriteLine("Press any key to exit ...");
             Console.ReadKey();
