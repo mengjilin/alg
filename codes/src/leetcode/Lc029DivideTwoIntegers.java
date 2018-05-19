@@ -6,6 +6,11 @@ package leetcode;
  */
 public class Lc029DivideTwoIntegers {
     public static int divide(int dividend, int divisor) {
+        //return divideBit(dividend, divisor);
+        return divideDc(dividend, divisor);
+    }
+
+    public static int divideBit(int dividend, int divisor) {
         if (divisor == 0 || (divisor == -1 && dividend == Integer.MIN_VALUE)) return Integer.MAX_VALUE;
 
         int ret = 0;
@@ -28,6 +33,21 @@ public class Lc029DivideTwoIntegers {
         }
 
         return isPositive ? ret : -ret;
+    }
+
+    public static int divideDc(int dividend, int divisor) {
+        if (divisor == 0 || (divisor == -1 && dividend == Integer.MIN_VALUE)) return Integer.MAX_VALUE;
+
+        int ret = 0;
+        boolean isPositive = (dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0);
+        long dvd = Math.abs((long)dividend);
+        long dvs = Math.abs((long)divisor);
+
+        if (dvd < dvs) return 0;
+        int q2 = divideDc(dividend, divisor + divisor);
+        ret = q2 + q2 + (dvs < dvd && dvd < dvs + dvs ? isPositive ? 1 : -1 : 0);
+
+        return ret;
     }
 
     public static void main(String[] args) {
