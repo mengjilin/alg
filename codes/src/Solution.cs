@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc068TextJustification().Test();
+            new leetcode.Lc069Sqrt().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
@@ -17,7 +17,6 @@ namespace alg.src
 
         static void Test()
         {
-            
         }
     }
 }
