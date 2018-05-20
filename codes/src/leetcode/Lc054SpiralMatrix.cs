@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using alg;
 
 /*
- * tags: backtracking
+ * tags: array
  */
 namespace leetcode
 {

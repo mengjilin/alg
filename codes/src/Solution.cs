@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace alg.src
 {
@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc054SpiralMatrix().Test();
+            new leetcode.Lc068TextJustification().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
@@ -17,7 +17,7 @@ namespace alg.src
 
         static void Test()
         {
-            Console.WriteLine(-7 >> 1);
+            
         }
     }
 }
