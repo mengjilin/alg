@@ -14,22 +14,63 @@ namespace leetcode
     {
         public string MinWindow(string s, string t)
         {
-            var dict = new Dictionary<char, int[]>(); // value: count in t, and current count in s
-            foreach (var c in t)
-            {
-                if (!dict.ContainsKey(c)) dict.Add(c, new int[] { 1, 0 });
-                else dict[c][0]++;
-            }
+            var heap = new Heap(t);
 
-            int cnt = t.Length;
-            int minIdx = 0;
+            int minIdx = -1;
             int minLen = int.MaxValue;
-            for (int notFoundCnt = t.Length, i = 0; i < s.Length; i++)
+            for (int i = 0; i < s.Length; i++)
             {
-
+                if (heap.Contains(s[i]))
+                {
+                    heap.Update(s[i], i);
+                    if (heap.IsFoundAll() && minLen > i - heap.Lowest() + 1)
+                    {
+                        minIdx = heap.Lowest();
+                        minLen = i - heap.Lowest() + 1;
+                    }
+                }
             }
 
-            return "";
+            return minIdx == -1 ? "" : s.Substring(minIdx, minLen);
+        }
+
+        class Heap
+        {
+            public Heap(string t)
+            {
+                _t = t;
+                _indexInS = new int[t.Length];
+                Array.Fill(_indexInS, -1);
+            }
+
+            public bool Contains(char c)
+            {
+                return _t.IndexOf(c) >= 0;
+            }
+
+            public bool IsFoundAll()
+            {
+                return _indexInS.All(i => i >= 0);
+            }
+
+            public void Update(char c, int index)
+            {
+                int minIdx = -1;
+                for (int i = 0; i < _t.Length; i++)
+                {
+                    if (_t[i] == c && (minIdx == -1 || _indexInS[minIdx] > _indexInS[i]))
+                        minIdx = i;
+                }
+                if (minIdx >= 0) _indexInS[minIdx] = index;
+            }
+
+            public int Lowest()
+            {
+                return _indexInS.Min();
+            }
+
+            private string _t;
+            private int[] _indexInS;
         }
 
         public void Test()
