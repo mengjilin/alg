@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc069Sqrt().Test();
+            new leetcode.Lc076MinimumWindowSubstring().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");

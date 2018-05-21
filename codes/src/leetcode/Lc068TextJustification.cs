@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using alg;
 
 /*
- * tags: number
+ * tags: text
  */
 namespace leetcode
 {
