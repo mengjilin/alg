@@ -1,23 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace alg
 {
     public static class Extensions
     {
-        public static bool Equals<T>(this IEnumerable<T> a, IEnumerable<T> b)
+        public static bool SameSet<T>(this IList<IList<T>> a, IList<IList<T>> b)
         {
-            if (a is IList<IList<T>> && b is IList<IList<T>>)
-            {
-                var comp = Comparer<IList<T>>.Create((i, j) => i.Compare(j, Comparer<T>.Default));
-                return 0 == (a as IList<IList<T>>).Compare(b as IList<IList<T>>, comp);
-            }
+            if (a == null && b == null) return true;
+            if (a == null || b == null) return false;
 
-            return Compare(a, b, Comparer<T>.Default) == 0;
+            var al = a.ToList();
+            var bl = b.ToList();
+            al.Sort((i, j) => i.Compare(j));
+            bl.Sort((i, j) => i.Compare(j));
+            var comp = Comparer<IList<T>>.Create((i, j) => i.Compare(j, Comparer<T>.Default));
+
+            return al.Compare(bl, comp) == 0;
         }
 
-        //public static IComparer<T> LIST_COMPARER<T>;// = Comparer<T>.Create((i, j) => i.Compare(j, Comparer<T>.Default)
+        public static bool SameWith<T>(this T[,] a, T[,] b)
+        {
+            if (a == null && b == null) return true;
+            if (a == null || b == null) return false;
+            if (a.GetLength(0) != b.GetLength(0) || a.GetLength(1) != b.GetLength(1)) return false;
+
+            var comparer = Comparer<T>.Default;
+            var ia = a.GetEnumerator();
+            var ib = b.GetEnumerator();
+            ia.Reset();
+            ib.Reset();
+            while (ia.MoveNext())
+            {
+                if (!ib.MoveNext()) return false;
+                int c = comparer.Compare((T)ia.Current, (T)ib.Current);
+                if (c != 0) return false;
+            }
+            return ib.MoveNext() ? false : true;
+        }
 
         public static int Compare<T>(this IEnumerable<T> a, IEnumerable<T> b)
         {
@@ -35,34 +56,12 @@ namespace alg
             {
                 while (ia.MoveNext())
                 {
-                    if (!ib.MoveNext()) return -1;
+                    if (!ib.MoveNext()) return 1;
                     int c = comparer.Compare(ia.Current, ib.Current);
                     if (c != 0) return c;
                 }
                 return ib.MoveNext() ? -1 : 0;
             }
-        }
-
-        public static int Compare<T>(this T[,] a, T[,] b)
-        {
-            if (a == null && b == null) return 0;
-            if (a == null) return -1;
-            if (b == null) return 1;
-            if (a.GetLength(0) != b.GetLength(0)) return a.GetLength(0) - b.GetLength(0);
-            if (a.GetLength(1) != b.GetLength(1)) return a.GetLength(1) - b.GetLength(1);
-
-            var comparer = Comparer<T>.Default;
-            var ia = a.GetEnumerator();
-            var ib = b.GetEnumerator();
-            ia.Reset();
-            ib.Reset();
-            while (ia.MoveNext())
-            {
-                if (!ib.MoveNext()) return -1;
-                int c = comparer.Compare((T)ia.Current, (T)ib.Current);
-                if (c != 0) return c;
-            }
-            return ib.MoveNext() ? -1 : 0;
         }
     }
 }

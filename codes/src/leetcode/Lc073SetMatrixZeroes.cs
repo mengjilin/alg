@@ -52,7 +52,7 @@ namespace leetcode
                 {1, 0, 1}
             };
             SetZeroes(input);
-            Console.WriteLine(exp.Compare(input) == 0);
+            Console.WriteLine(exp.SameWith(input));
 
             input = new int[,]
             {
@@ -67,7 +67,7 @@ namespace leetcode
                 {0, 3, 1, 0}
             };
             SetZeroes(input);
-            Console.WriteLine(exp.Compare(input) == 0);
+            Console.WriteLine(exp.SameWith(input));
         }
     }
 }

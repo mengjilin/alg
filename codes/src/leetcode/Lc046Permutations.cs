@@ -91,8 +91,7 @@ namespace leetcode
                 new List<int>{2,3,1},
                 new List<int>{3,1,2},
                 new List<int>{3,2,1} };
-            (res as List<IList<int>>).Sort((a, b) => a.Compare(b, Comparer<int>.Default));
-            Console.WriteLine(exp.Equals(res));
+            Console.WriteLine(exp.SameSet(res));
         }
     }
 }
