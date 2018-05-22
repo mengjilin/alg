@@ -6,12 +6,25 @@ namespace alg
 {
     public static class Extensions
     {
+        public static bool Equals<T>(this IEnumerable<T> a, IEnumerable<T> b)
+        {
+            if (a is IList<IList<T>> && b is IList<IList<T>>)
+            {
+                var comp = Comparer<IList<T>>.Create((i, j) => i.Compare(j, Comparer<T>.Default));
+                return 0 == (a as IList<IList<T>>).Compare(b as IList<IList<T>>, comp);
+            }
+
+            return Compare(a, b, Comparer<T>.Default) == 0;
+        }
+
+        //public static IComparer<T> LIST_COMPARER<T>;// = Comparer<T>.Create((i, j) => i.Compare(j, Comparer<T>.Default)
+
         public static int Compare<T>(this IEnumerable<T> a, IEnumerable<T> b)
         {
             return Compare(a, b, Comparer<T>.Default);
         }
 
-        public static int Compare<T>(this IEnumerable<T> a, IEnumerable<T> b, Comparer<T> comparer)
+        public static int Compare<T>(this IEnumerable<T> a, IEnumerable<T> b, IComparer<T> comparer)
         {
             if (a == null && b == null) return 0;
             if (a == null) return -1;

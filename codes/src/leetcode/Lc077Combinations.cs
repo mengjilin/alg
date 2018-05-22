@@ -44,7 +44,7 @@ namespace leetcode
                     new List<int>{2,3},
                     new List<int>{2,4},
                     new List<int>{3,4},};
-            Console.WriteLine(0 == exp.Compare(Combine(4, 2), Comparer<IList<int>>.Create((a, b) => a.Compare(b))));
+            Console.WriteLine(exp.Equals(Combine(4, 2)));
         }
     }
 }
