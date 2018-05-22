@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using alg;
 
 /*
- * tags: sliding windows
+ * tags: two pointers, sliding windows, hash
  */
 namespace leetcode
 {
