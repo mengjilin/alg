@@ -39,43 +39,98 @@ namespace leetcode
             public Heap(string t)
             {
                 _t = t;
-                _indexInS = new int[t.Length];
-                Array.Fill(_indexInS, -1);
+                _hash = new Node[256];
+                _heap = new List<Node>();
+                foreach (var c in t)
+                {
+                    int i = c % 256;
+                    if (_hash[i] == null)
+                    {
+                        var node = new Node(_heap.Count, new LinkedList<int>(new int[] { -1 }));
+                        _hash[i] = node;
+                        _heap.Add(node);
+                    }
+                    else
+                    {
+                        _heap[_hash[i].Index].Data.AddLast(-1);
+                    }
+                }
             }
 
             public bool Contains(char c)
             {
-                return _t.IndexOf(c) >= 0;
+                return _hash[c % 256] != null;
             }
 
             public bool IsFoundAll()
             {
-                return _indexInS.All(i => i >= 0);
+                return _foundCount >= _t.Length;
             }
 
             public void Update(char c, int index)
             {
-                int minIdx = -1;
-                for (int i = 0; i < _t.Length; i++)
+                var node = _hash[c % 256];
+                if (node.Data.First.Value == -1) _foundCount++;
+                node.Data.RemoveFirst();
+                node.Data.AddLast(index);
+
+                // maintain a min heap
+                for (int i = node.Index; i < _heap.Count;)
                 {
-                    if (_t[i] == c && (minIdx == -1 || _indexInS[minIdx] > _indexInS[i]))
-                        minIdx = i;
+                    int left = 2 * i + 1;
+                    int right = 2 * i + 2;
+                    if (right < _heap.Count && _heap[right].Data.First.Value < _heap[left].Data.First.Value)
+                    {
+                        left = right;
+                    }
+                    if (left < _heap.Count && _heap[left].Data.First.Value < _heap[i].Data.First.Value)
+                    {
+                        Swap(_heap, i, left);
+                        _heap[i].Index = i;
+                        _heap[left].Index = left;
+                        i = left;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                if (minIdx >= 0) _indexInS[minIdx] = index;
             }
 
             public int Lowest()
             {
-                return _indexInS.Min();
+                return _heap[0].Data.First.Value;
             }
 
             private string _t;
-            private int[] _indexInS;
+
+            private int _foundCount = 0;
+            private Node[] _hash;
+            private List<Node> _heap;
+
+            private void Swap(List<Node> list, int i, int j)
+            {
+                var tmp = list[i];
+                list[i] = list[j];
+                list[j] = tmp;
+            }
+
+            class Node
+            {
+                public int Index;
+                public LinkedList<int> Data;
+                public Node(int i, LinkedList<int> data)
+                {
+                    this.Index = i;
+                    this.Data = data;
+                }
+            }
         }
 
         public void Test()
         {
             Console.WriteLine(MinWindow("ADOBECODEBANC", "ABC") == "BANC");
+            Console.WriteLine(MinWindow("ask_not_what_your_country_can_do_for_you_ask_what_you_can_do_for_your_country", "ask_country") == "sk_not_what_your_c");
         }
     }
 }
