@@ -5,22 +5,20 @@ import java.util.Arrays;
 /*
  * tags: binary search
  * Time(logn), Space(1)
- * if middle is less than target, and left side is sorted or (right is sorted and ) target is less than the biggest on right,
- * then it's at right side
+ * if (nums[lo] <= nums[m]) then left side is sorted
  */
 public class Lc033SearchinRotatedSortedArray {
     public static int search(int[] nums, int target) {
         for (int lo = 0, hi = nums.length - 1; lo <= hi; ) {
             int m = (lo+hi)/2;
             if (nums[m] == target) return m;
-            else if (nums[m] < target) {
-                // left is sorted, or it's at right side
-                if (nums[lo] <= nums[m] || target <= nums[hi]) lo = m + 1;
-                else hi = m - 1;
-            } else { // target < nums[m]
-                // right is sorted, or it's at left side
-                if (nums[m] <= nums[hi] || nums[lo] <= target) hi = m - 1;
+
+            if (nums[lo] <= nums[m]) { // left side is sorted
+                if (nums[lo] <= target && target <= nums[m]) hi = m - 1;
                 else lo = m + 1;
+            } else { // right side is sorted
+                if (nums[m] <= target && target <= nums[hi]) lo = m + 1;
+                else hi = m - 1;
             }
         }
 
