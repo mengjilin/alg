@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc084LargestRectangleinHistogram().Test();
+            new leetcode.Lc085MaximalRectangle().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
