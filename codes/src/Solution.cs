@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc087ScrambleString().Test();
+            new leetcode.Lc093RestoreIPAddresses().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
