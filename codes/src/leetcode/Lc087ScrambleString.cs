@@ -8,7 +8,8 @@ using alg;
 
 /*
  * tags: dp
- * Time(n^3), Space(n^3)
+ * Time(n^4), Space(n^4)
+ * dp[i,j,n] = any(dp[i,j,p] && dp[i+p,j+p,n-p] || dp[i,j+n-p,p] && dp[i+p,j,n-p]), p=[1..n-1]
  */
 namespace leetcode
 {
@@ -17,36 +18,28 @@ namespace leetcode
         public bool IsScramble(string s1, string s2)
         {
             if (s1.Length != s2.Length) return false;
-            if (s1.Length == 0) return true;
 
             int n = s1.Length;
             var dp = new bool[n + 1, n + 1, n + 1];
             for (int i = 0; i <= n; i++) for (int j = 0; j <= n; j++) dp[i, j, 0] = true;
+            for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) dp[i, j, 1] = s1[i] == s2[j];
 
-            for (int len = 1; len <= n; len++)
+            for (int len = 2; len <= n; len++)
             {
                 for (int i = 0; i <= n - len; i++)
                 {
                     for (int j = 0; j <= n - len; j++)
                     {
-                        for (int k = 1; k < len; k++)
+                        for (int p = 1; p < len && !dp[i, j, len]; p++)
                         {
-                            dp[i, j, len] |= dp[i, j, k]
+                            dp[i, j, len] = dp[i, j, p] && dp[i + p, j + p, len - p]
+                                || dp[i, j + len - p, p] && dp[i + p, j, len - p];
                         }
-                        dp[i, j, len] =
-                            (s1[i] == s2[j] && dp[i + 1, j + 1, len - 1]) ||
-                            (s1[i] == s2[j + len - 1] && dp[i + 1, j, len - 1]) ||
-                            (s1[i + len - 1] == s2[j] && dp[i, j + 1, len - 1] ||
-                            (s1[i + len - 1] == s2[j + len - 1] && dp[i, j, len - 1]));
                     }
                 }
             }
 
-            bool ret = false;
-            for (int i = 0; i < n; i++)
-                ret |= dp[0, 0, i] && dp[i, i, n - i] || dp[0, n - i, i] && dp[i, 0, n - i];
-
-            return ret;
+            return dp[0, 0, n];
         }
 
         public void Test()
