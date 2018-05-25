@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc086PartitionList().Test();
+            new leetcode.Lc087ScrambleString().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
