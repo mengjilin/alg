@@ -25,8 +25,7 @@ namespace leetcode
                 while (stack.Count > 0 && (i == heights.Length || heights[stack.Peek()] >= heights[i]))
                 {
                     int j = stack.Pop();
-                    int jPrev = stack.Count == 0 ? -1 : stack.Peek();
-                    ret = Math.Max(ret, heights[j] * (i - jPrev - 1));
+                    ret = Math.Max(ret, heights[j] * (stack.Count == 0 ? i : i - stack.Peek() - 1));
                 }
 
                 stack.Push(i);

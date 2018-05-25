@@ -8,7 +8,7 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc085MaximalRectangle().Test();
+            new leetcode.Lc086PartitionList().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
