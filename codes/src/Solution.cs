@@ -8,8 +8,8 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc096UniqueBinarySearchTrees:");
-            new leetcode.Lc096UniqueBinarySearchTrees().Test();
+            Console.WriteLine("Lc97InterleavingString:");
+            new leetcode.Lc97InterleavingString().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
