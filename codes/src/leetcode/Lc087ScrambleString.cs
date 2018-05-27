@@ -10,6 +10,10 @@ using alg;
  * tags: dp
  * Time(n^4), Space(n^4)
  * dp[i,j,n] = any(dp[i,j,p] && dp[i+p,j+p,n-p] || dp[i,j+n-p,p] && dp[i+p,j,n-p]), p=[1..n-1]
+ * 
+ * in any position p(=[1..n-1]) partitioning the string into two parts, s1[0..p-1], and s1[p..n-1],
+ * then s1 is a scramble s2 if and only if s1[0..p-1] is scramble s2[0..p-1] and s1[p..n-1] is scramble s2[p..n-1],
+ * or s1[0..p-1] is scramble s2[n-p,n-1] and s1[p..n-1] is scramble s2[0..n-p-1], for any p.
  */
 namespace leetcode
 {

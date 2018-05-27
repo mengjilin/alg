@@ -6,6 +6,19 @@ namespace alg
 {
     public static class Extensions
     {
+        public static bool SameSet<T>(this IList<T> a, IList<T> b)
+        {
+            if (a == null && b == null) return true;
+            if (a == null || b == null) return false;
+
+            var al = a.ToList();
+            var bl = b.ToList();
+            al.Sort();
+            bl.Sort();
+
+            return al.SequenceEqual(bl);
+        }
+
         public static bool SameSet<T>(this IList<IList<T>> a, IList<IList<T>> b)
         {
             if (a == null && b == null) return true;

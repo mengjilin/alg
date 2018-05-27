@@ -8,7 +8,8 @@ namespace alg.src
     {
         static void Main(string[] args)
         {
-            new leetcode.Lc093RestoreIPAddresses().Test();
+            Console.WriteLine("Lc096UniqueBinarySearchTrees:");
+            new leetcode.Lc096UniqueBinarySearchTrees().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
