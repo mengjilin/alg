@@ -59,15 +59,19 @@ public class Lc032LongestValidParentheses {
      */
     static int longestValidParenthesesWithTwoPointers(String s) {
         int ret = 0;
+		
+        int left = 0, right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') left++; else right++;
+            if (left == right) ret = Math.max(ret, 2 * left);
+            else if (right > left) left = right = 0;
+        }
 
-        for (int scan = 0; scan < 2; scan++) {
-            int left = 0, right = 0;
-            for (int i = 0; i < s.length(); i++) {
-                if (s.charAt(scan == 0 ? i : s.length() - 1 - i) == '(') left++;
-                else right++;
-                if (left == right) ret = Math.max(ret, 2 * left);
-                else if (scan == 0 && right > left || scan == 1 && right < left) left = right = 0;
-            }
+        left = right = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '(') left++; else right++;
+            if (left == right) ret = Math.max(ret, 2 * left);
+            else if (right < left) left = right = 0;
         }
 
         return ret;

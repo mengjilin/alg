@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace alg.src
+namespace alg
 {
     class Solution
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc97InterleavingString:");
-            new leetcode.Lc97InterleavingString().Test();
+            Console.WriteLine("BinarySearchTree:");
+            new tree.BinarySearchTree().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
