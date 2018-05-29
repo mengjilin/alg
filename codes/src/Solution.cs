@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("BinarySearchTree:");
-            new tree.BinarySearchTree().Test();
+            Console.WriteLine("Lc115DistinctSubsequences:");
+            new leetcode.Lc115DistinctSubsequences().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
