@@ -15,7 +15,7 @@ using alg;
  */
 namespace leetcode
 {
-    public class Lc97InterleavingString
+    public class Lc097InterleavingString
     {
         public bool IsInterleave(string s1, string s2, string s3)
         {

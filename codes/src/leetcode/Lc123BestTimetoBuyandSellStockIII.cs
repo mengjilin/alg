@@ -7,88 +7,98 @@ using alg;
 
 /*
  * tags: dp
+ * Time(n), Space(kn), can compact to Space(k)
  * at most k transactions: 
- * dp: insert/replace the last profit (prices[n] - lowest) into profits[0..k-1], where lowest is the lowest price since last buy
- * dp = sum(profits[i]), i=[0..k-1]
+ * dp[k, n] = max(dp[k, n-1], prices[n] - prices[i] + dp[k-1, i-1]), i=[0..n-1]
+ *          = max(dp[k, n-1], prices[n] - min(prices[i] - dp[k-1, i-1]))
  */
 namespace leetcode
 {
     public class Lc123BestTimetoBuyandSellStockIII
     {
-        public int MaxProfit(int[] prices)
+        public int MaxProfitDp(int[] prices)
         {
-            var buys = new int[3];
-            var sells = new int[3];
-            int trans = 0;
-            for (int i = 1; i < prices.Length; i++)
+            if (prices.Length == 0) return 0;
+
+            var dp = new int[3, prices.Length];
+            for (int k = 1; k <= 2; k++)
             {
-                if (trans > 0 && buys[trans] == 0)
+                int min = prices[0];
+                for (int i = 1; i < prices.Length; i++)
                 {
-                    if (prices[i] >= prices[sells[trans - 1]]) sells[trans - 1] = i;
-                    else buys[trans] = i;
-                }
-                else
-                {
-                    if (prices[i] > prices[buys[trans]])
-                    {
-                        sells[trans] = i;
-                        if (trans == buys.Length - 1) Merge(prices, buys, sells);
-                        if (trans < buys.Length - 1) trans++;
-                    }
-                    else buys[trans] = i;
+                    min = Math.Min(min, prices[i - 1] - (i == 1 ? 0 : dp[k - 1, i - 2]));
+                    dp[k, i] = Math.Max(dp[k, i - 1], prices[i] - min);
                 }
             }
 
-            return (trans <= 0 ? 0 : prices[sells[0]] - prices[buys[0]])
-                + (trans <= 1 ? 0 : prices[sells[1]] - prices[buys[1]]);
+            return dp[2, prices.Length - 1];
         }
 
-        void Merge(int[] prices, int[] buys, int[] sells)
+        public int MaxProfitDpCompact(int[] prices)
         {
-            int minSell = 0;
-            for (int i = 1; i < buys.Length - 1; i++)
+            int buy1 = int.MaxValue, buy2 = int.MaxValue;
+            int sell1 = 0, sell2 = 0;
+
+            for (int i = 0; i < prices.Length; i++)
             {
-                if (prices[sells[minSell]] - prices[buys[minSell + 1]] > prices[sells[i]] - prices[buys[i + 1]])
-                    minSell = i;
+                buy1 = Math.Min(buy1, prices[i]);
+                sell1 = Math.Max(sell1, prices[i] - buy1);
+                buy2 = Math.Min(buy2, prices[i] - sell1);
+                sell2 = Math.Max(sell2, prices[i] - buy2);
             }
 
-            int minBuy = 0;
-            for (int i = 1; i < buys.Length; i++)
+            return sell2;
+        }
+
+        public int MaxProfitTwoPass(int[] prices)
+        {
+            if (prices.Length == 0) return 0;
+            var dp = new int[prices.Length];
+            for (int highest = prices[prices.Length - 1], i = prices.Length - 2; i >= 0; i--)
             {
-                if (prices[sells[minBuy]] - prices[buys[minBuy]] > prices[sells[i]] - prices[buys[i]])
-                    minBuy = i;
+                dp[i] = Math.Max(dp[i + 1], highest - prices[i]);
+                highest = Math.Max(highest, prices[i]);
             }
 
-            if (prices[sells[minSell]] - prices[buys[minSell + 1]] < prices[sells[minBuy]] - prices[buys[minBuy]])
+            int ret = dp[0];
+            int firstProfit = 0;
+            for (int lowest = prices[0], i = 1; i < prices.Length - 1; i++)
             {
-                sells[minSell] = sells[minSell + 1];
-                minBuy = minSell + 1;
+                firstProfit = Math.Max(firstProfit, prices[i] - lowest);
+                ret = Math.Max(ret, firstProfit + dp[i + 1]);
+                lowest = Math.Min(lowest, prices[i]);
             }
-            for (int i = minBuy; i < buys.Length - 1; i++)
-            {
-                buys[i] = buys[i + 1];
-                sells[i] = sells[i + 1];
-            }
-            buys[buys.Length - 1] = 0;
+
+            return ret;
         }
 
 
         public void Test()
         {
             var prices = new int[] { 3, 3, 5, 0, 0, 3, 1, 4 };
-            Console.WriteLine(MaxProfit(prices) == 6);
+            Console.WriteLine(MaxProfitDp(prices) == 6);
+            Console.WriteLine(MaxProfitTwoPass(prices) == 6);
+            Console.WriteLine(MaxProfitDpCompact(prices) == 6);
 
             prices = new int[] { 1, 2, 3, 4, 5 };
-            Console.WriteLine(MaxProfit(prices) == 4);
+            Console.WriteLine(MaxProfitDp(prices) == 4);
+            Console.WriteLine(MaxProfitTwoPass(prices) == 4);
+            Console.WriteLine(MaxProfitDpCompact(prices) == 4);
 
             prices = new int[] { 7, 6, 4, 3, 1 };
-            Console.WriteLine(MaxProfit(prices) == 0);
+            Console.WriteLine(MaxProfitDp(prices) == 0);
+            Console.WriteLine(MaxProfitTwoPass(prices) == 0);
+            Console.WriteLine(MaxProfitDpCompact(prices) == 0);
 
             prices = new int[] { 4, 1, 2 };
-            Console.WriteLine(MaxProfit(prices) == 1);
+            Console.WriteLine(MaxProfitDp(prices) == 1);
+            Console.WriteLine(MaxProfitTwoPass(prices) == 1);
+            Console.WriteLine(MaxProfitDpCompact(prices) == 1);
 
             prices = new int[] { 2, 1, 2, 0, 1 };
-            Console.WriteLine(MaxProfit(prices) == 2);
+            Console.WriteLine(MaxProfitDp(prices) == 2);
+            Console.WriteLine(MaxProfitTwoPass(prices) == 2);
+            Console.WriteLine(MaxProfitDpCompact(prices) == 2);
         }
     }
 }
