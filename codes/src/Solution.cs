@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc124BinaryTreeMaximumPathSum:");
-            new leetcode.Lc124BinaryTreeMaximumPathSum().Test();
+            Console.WriteLine("Lc127WordLadder:");
+            new leetcode.Lc127WordLadder().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
