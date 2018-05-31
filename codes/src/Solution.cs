@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc123BestTimetoBuyandSellStockIII:");
-            new leetcode.Lc123BestTimetoBuyandSellStockIII().Test();
+            Console.WriteLine("Lc124BinaryTreeMaximumPathSum:");
+            new leetcode.Lc124BinaryTreeMaximumPathSum().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
