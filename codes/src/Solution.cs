@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc126WordLadderII:");
-            new leetcode.Lc126WordLadderII().Test();
+            Console.WriteLine("Lc128LongestConsecutiveSequence:");
+            new leetcode.Lc128LongestConsecutiveSequence().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
