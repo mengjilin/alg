@@ -7,11 +7,10 @@ using alg;
 
 
 /*
- * tags: dp
- * Time(mn), Space(mn)
- * dp[i,j] = dp[i-1,j] if s1[i]==s3[k] or
- *           dp[i,j-1] if s2[j]==s3[k]
- * k=i+j, space can be compacted to O(n)
+ * tags: bfs
+ * 1. create a graph
+ * 2. like Dijkstra to divide nodes to two set: visited/unvisited.
+ * 3. how to find the neighbors? we can try all 26 tranformations on each char, or we can create all hash of word deleted one char.
  */
 namespace leetcode
 {
