@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc128LongestConsecutiveSequence:");
-            new leetcode.Lc128LongestConsecutiveSequence().Test();
+            Console.WriteLine("Lc132PalindromePartitioningII:");
+            new leetcode.Lc132PalindromePartitioningII().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
@@ -18,6 +18,8 @@ namespace alg
 
         static void Test()
         {
+            var li = new List<int>[3];
+            var map = new Dictionary<int, int>[10];
         }
     }
 }
