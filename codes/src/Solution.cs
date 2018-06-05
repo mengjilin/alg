@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc132PalindromePartitioningII:");
-            new leetcode.Lc132PalindromePartitioningII().Test();
+            Console.WriteLine("Lc137SingleNumberII:");
+            new leetcode.Lc137SingleNumberII().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
@@ -18,8 +18,7 @@ namespace alg
 
         static void Test()
         {
-            var li = new List<int>[3];
-            var map = new Dictionary<int, int>[10];
+            Console.WriteLine((-1)&5);
         }
     }
 }
