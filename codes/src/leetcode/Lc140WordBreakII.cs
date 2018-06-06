@@ -7,7 +7,7 @@ using alg;
 
 
 /*
- * tags: union find?
+ * tags: dp, dfs, backtracking
  */
 namespace leetcode
 {
@@ -15,7 +15,7 @@ namespace leetcode
     {
         public IList<string> WordBreak(string s, IList<string> wordDict)
         {
-            if (string.IsNullOrEmpty(s)) return null;
+            if (!WordBreakI(s, wordDict)) return new List<string>();
             var dp = new List<string>[s.Length];
             var words = new HashSet<string>(wordDict);
 
@@ -29,9 +29,24 @@ namespace leetcode
                     {
                         if (j == 0) dp[i].Add(subs);
                         else foreach (var ps in dp[j - 1])
-                            dp[i].Add(ps + " " + subs);
+                                dp[i].Add(ps + " " + subs);
                     }
                 }
+            }
+
+            return dp[s.Length - 1];
+        }
+
+        public bool WordBreakI(string s, IList<string> wordDict)
+        {
+            if (string.IsNullOrEmpty(s)) return false;
+            var dp = new bool[s.Length];
+            var words = new HashSet<string>(wordDict);
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                for (int j = 0; j <= i && !dp[i]; j++)
+                    dp[i] = (j == 0 ? true : dp[j - 1]) && words.Contains(s.Substring(j, i - j + 1));
             }
 
             return dp[s.Length - 1];

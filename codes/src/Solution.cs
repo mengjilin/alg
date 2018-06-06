@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc140WordBreakII:");
-            new leetcode.Lc140WordBreakII().Test();
+            Console.WriteLine("Lc142LinkedListCycleII:");
+            new leetcode.Lc142LinkedListCycleII().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
