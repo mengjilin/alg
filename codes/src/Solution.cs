@@ -8,8 +8,8 @@ namespace alg
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Lc142LinkedListCycleII:");
-            new leetcode.Lc142LinkedListCycleII().Test();
+            Console.WriteLine("Lc149MaxPointsonaLine:");
+            new leetcode.Lc149MaxPointsonaLine().Test();
             //Test();
 
             Console.WriteLine("Press any key to exit ...");
