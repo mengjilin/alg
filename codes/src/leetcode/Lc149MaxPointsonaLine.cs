@@ -7,7 +7,7 @@ using alg;
 
 
 /*
- * tags: dp, dfs, backtracking
+ * tags: geometry(slope, orientation, on line, on segment)
  */
 namespace leetcode
 {
@@ -16,34 +16,86 @@ namespace leetcode
         public int MaxPoints(Point[] points)
         {
             int n = points.Length;
-            if (n < 2) return 0;
-            var slopes = new int[n * n];
-            for (int i = 0; i < slopes.Length; i++) slopes[i] = i;
-            Array.Sort(slopes, (i, j) => Comp(points, i, j));
-
-            int max = 1, cur = 1;
-            for (int i = 1; i < n * (n - 1) / 2; i++)
+            Array.Sort(points, (a, b) => a.x != b.x ? a.x - b.x : a.y - b.y);
+            int max = 0;
+            for (int i = 0; i < n; i++)
             {
-                if (Comp(points, slopes[i - 1], slopes[i]) == 0) cur++;
-                else cur = 1;
-                max = Math.Max(max, cur);
+                int samePoints = 1, maxSameSlope = 0;
+                var slopes = new Dictionary<long, int>();
+                for (int j = i + 1; j < n; j++)
+                {
+                    int deltaX = points[j].x - points[i].x;
+                    int deltaY = points[j].y - points[i].y;
+
+                    if (deltaX == 0 && deltaY == 0)
+                    {
+                        samePoints++;
+                        continue;
+                    }
+
+                    int gcd = GreatestCommonDenominator(deltaX, deltaY);
+                    deltaX /= gcd;
+                    deltaY /= gcd;
+
+                    var key = (((long)deltaX) << 32) + deltaY;
+                    if (!slopes.ContainsKey(key))
+                        slopes.Add(key, 1);
+                    else
+                        slopes[key]++;
+
+                    maxSameSlope = Math.Max(maxSameSlope, slopes[key]);
+                }
+                max = Math.Max(max, samePoints + maxSameSlope);
             }
-            for (int i = 1; i <= n; i++)
-                if (i * i - i == max) return i;
-            return 0;
+
+            return max;
         }
 
-        int Comp(Point[] points, int i, int j)
+        int GreatestCommonDenominator(int a, int b)
+        {
+            while (b != 0)
+            {
+                int t = a % b;
+                a = b;
+                b = t;
+            }
+            return a;
+        }
+
+        public int MaxPoints2(Point[] points)
         {
             int n = points.Length;
-            if (i / n <= i % n) return 1;
-            if (j / n <= j % n) return -1;
-            var a1 = points[i / n];
-            var a2 = points[i % n];
-            var b1 = points[j / n];
-            var b2 = points[j % n];
-            return (a2.y - a1.y) * (b2.x - b1.x) - (a2.x - a1.x) * (b2.y - b1.y);
+            Array.Sort(points, (a, b) => a.x != b.x ? a.x - b.x : a.y - b.y);
+            int max = n > 0 && IsSamePoint(points[0], points[n - 1]) ? n : 0;
+            for (int i = 0; i < n; i++)
+            {
+                if (i < n - 1 && IsSamePoint(points[i], points[i + 1])) continue;
+                for (int j = i + 1; j < n; j++)
+                {
+                    int cur = 0;
+                    for (int k = 0; k < n; k++)
+                    {
+                        if (IsOnLine(points[i], points[j], points[k])) cur++;
+                    }
+                    max = Math.Max(max, cur);
+
+                }
+            }
+
+            return max;
         }
+
+        bool IsSamePoint(Point a, Point b)
+        {
+            return a.x == b.x && a.y == b.y;
+        }
+
+        // return true if c is on line (a, b)
+        bool IsOnLine(Point a, Point b, Point c)
+        {
+            return ((long)b.y - a.y) * (c.x - b.x) == ((long)b.x - a.x) * (c.y - b.y);
+        }
+
 
         public void Test()
         {
@@ -52,6 +104,7 @@ namespace leetcode
                 new Point(2,2),
                 new Point(3,3),};
             Console.WriteLine(MaxPoints(points) == 3);
+            Console.WriteLine(MaxPoints2(points) == 3);
 
             points = new Point[] {
                 new Point(1,1),
@@ -61,6 +114,26 @@ namespace leetcode
                 new Point(2,3),
                 new Point(1,4),};
             Console.WriteLine(MaxPoints(points) == 4);
+            Console.WriteLine(MaxPoints2(points) == 4);
+
+            points = new Point[] {
+                new Point(0,-12),
+                new Point(5,2),
+                new Point(2,5),
+                new Point(0,-5),
+                new Point(1,5),
+                new Point(2,-2),
+                new Point(5,-4),
+                new Point(3,4),
+                new Point(-2,4),
+                new Point(-1,4),
+                new Point(0,-5),
+                new Point(0,-8),
+                new Point(-2,-1),
+                new Point(0,-11),
+                new Point(0,-9),};
+            Console.WriteLine(MaxPoints(points) == 6);
+            Console.WriteLine(MaxPoints2(points) == 6);
         }
     }
 }

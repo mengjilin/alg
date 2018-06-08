@@ -35,14 +35,17 @@ namespace alg.tree
             var curr = root;
             while (curr != null || stack.Count > 0)
             {
-                while (curr != null) // push all left
+                if (curr != null)
                 {
                     stack.Push(curr);
                     curr = curr.Lc;
                 }
-                curr = stack.Pop();
-                ret.Add(curr.Val); // visit
-                curr = curr.Rc; // move to right
+                else
+                {
+                    var n = stack.Pop();
+                    ret.Add(n.Val); // visit
+                    curr = n.Rc;
+                }
             }
 
             return ret;
@@ -74,6 +77,90 @@ namespace alg.tree
                 }
             }
 
+            return ret;
+        }
+
+        public IList<int> PreorderTraversalStack(Node root)
+        {
+            var ret = new List<int>();
+            if (root == null) return ret;
+
+            var stack = new Stack<Node>();
+            stack.Push(root);
+            while (stack.Count > 0)
+            {
+                var curr = stack.Pop();
+                ret.Add(curr.Val); // visit
+                if (curr.Rc != null) stack.Push(curr.Rc);
+                if (curr.Lc != null) stack.Push(curr.Lc);
+            }
+
+            return ret;
+        }
+
+        public IList<int> PreorderTraversalStack2(Node root)
+        {
+            var ret = new List<int>();
+
+            var stack = new Stack<Node>();
+            var curr = root;
+            while (curr != null || stack.Count > 0)
+            {
+                if (curr != null)
+                {
+                    ret.Add(curr.Val);
+                    stack.Push(curr);
+                    curr = curr.Lc;
+                }
+                else
+                {
+                    curr = stack.Pop().Rc;
+                }
+            }
+
+            return ret;
+        }
+
+        public IList<int> PostorderTraversalStack(Node root)
+        {
+            var ret = new List<int>();
+            if (root == null) return ret;
+
+            var stack = new Stack<Node>();
+            stack.Push(root);
+            while (stack.Count > 0)
+            {
+                var curr = stack.Pop();
+                ret.Add(curr.Val); // visit
+                if (curr.Lc != null) stack.Push(curr.Lc);
+                if (curr.Rc != null) stack.Push(curr.Rc);
+            }
+
+            ret.Reverse();
+            return ret;
+        }
+
+        public IList<int> PostorderTraversalStack2(Node root)
+        {
+            var ret = new List<int>();
+
+            var stack = new Stack<Node>();
+            var curr = root;
+            while (curr != null || stack.Count > 0)
+            {
+                if (curr != null)
+                {
+                    ret.Add(curr.Val); // visit
+                    stack.Push(curr);
+                    curr = curr.Rc;
+                }
+                else
+                {
+                    curr = stack.Pop().Lc;
+                }
+            }
+
+            ret.Reverse(); // visit
             return ret;
         }
 
@@ -166,14 +253,22 @@ namespace alg.tree
             Console.WriteLine(exp.SequenceEqual(InorderTraversalStack(root)));
             Console.WriteLine(exp.SequenceEqual(InorderTraversalMorris(new Node(root))));
 
-            var exp1 = new List<IList<int>>
+            var expPre = new List<int> { 2, 1, 3, 4 };
+            Console.WriteLine(expPre.SequenceEqual(PreorderTraversalStack(root)));
+            Console.WriteLine(expPre.SequenceEqual(PreorderTraversalStack2(root)));
+
+            var expPost = new List<int> { 1, 4, 3, 2 };
+            Console.WriteLine(expPost.SequenceEqual(PostorderTraversalStack(root)));
+            Console.WriteLine(expPost.SequenceEqual(PostorderTraversalStack2(root)));
+
+            var expLevel = new List<IList<int>>
             {
-                new List<int>{2 },
-                new List<int>{1, 3 },
-                new List<int>{4 },
+                new List<int>{ 2 },
+                new List<int>{ 1, 3 },
+                new List<int>{ 4 },
             };
-            Console.WriteLine(exp1.SameSet(LevelOrder(root)));
-            Console.WriteLine(exp1.SameSet(LevelOrderDfs(root)));
+            Console.WriteLine(expLevel.SameSet(LevelOrder(root)));
+            Console.WriteLine(expLevel.SameSet(LevelOrderDfs(root)));
 
             Console.WriteLine(UniqueTrees(3) == 5);
         }
